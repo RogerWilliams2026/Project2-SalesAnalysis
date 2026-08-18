@@ -1,0 +1,4 @@
+jupyter_notebooks/*
+README.md
+.venv
+.gitignore

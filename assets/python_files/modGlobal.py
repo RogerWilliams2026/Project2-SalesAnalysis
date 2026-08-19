@@ -3,7 +3,7 @@
  
  globals vars
  
- conceit with: dfTemperature so modETl and main py could use same DataFrame! 
+ taken from temperature project and modified for this project
 
 """
 
@@ -22,8 +22,17 @@ CNST_STR_FILENAME_APPEND_CLEANED = "_Cleaned"
 CNST_STR_FILENAME_APPEND_WORKING = "_Working"
 CNST_STR_FILENAME_APPEND_VISUALISATION = "_Visualisation"
 
+#constant for project directory
+CNST_STR_PROJECT_DIR = "Project2-SalesAnalysis"
+
+#file path constants
+CNST_STR_CLEANFILENAME = "Sales_DataSet_Cleaned.csv"
+CNST_STR_SALESFILENAME = "Sales_DataSet.csv"
+CNST_STR_RAWSALESFILEFORETL = "sales data-set.csv"
+
+
 #default container size for tabs
 CNST_INT_CONTAINTER_HEIGHT = 800
 CNST_INT_INNER_CONTAINTER_HEIGHT = 780
 
-dfTemperature = None
+dfWorking = None

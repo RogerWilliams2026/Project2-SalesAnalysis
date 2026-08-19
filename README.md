@@ -58,7 +58,8 @@ In order to create the combined csv file and see the plots these notebooks need 
 - Notebook_ETL_Sales_Features_DataSet.ipynb <- ETL for Sales_Features_DataSet.csv
 - Notebook_ETL_Sales_Combined_DataSet.ipynb <- Combines the 3 cleaned csv files into one for visualisation
 - Notebook_ML.ipynb <- Contains the machine learning model for experimentation
-- Notebook_Visualisations.ipynb <- Contains the visualisations for the hypotheses
+- Notebook_Visualisations1.ipynb <- Contains the visualisations for the old hypotheses
+- Notebook_Visualisations2.ipynb <- Contains the visualisations for the new hopthesis and ML
 
 To see the final report run the following notebook from the Report folder:
 
@@ -150,6 +151,46 @@ now use more effective plot types but ran out of time to reimagine the plots.
 Analysed plots compared to hypothesis, by checking expected values against queries with the raw data. If the dataset to use is corrupt or incorrect the plot will be useless.
 
 For example the features data set.csv file has 7 months of date values not in sales data-set.csv, so that needed to be filtered before creating the combined csv file.
+
+## Libraries Used
+
+import os
+import numpy
+import streamlit as st
+import pandas as pd
+import seaborn as sns
+import plotly.express as px
+import pathlib
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+import nbformat
+from matplotlib.ticker import MultipleLocator
+import seaborn as sns
+
+#added by me for visualisation fine tuning
+from matplotlib.ticker import MultipleLocator
+
+#added by me for plotly.express visualisation issue
+import nbformat
+#for ML experiments
+from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import (
+accuracy_score, confusion_matrix, ConfusionMatrixDisplay,
+precision_score, recall_score, f1_score,
+roc_auc_score, roc_curve, classification_report,
+)
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.model_selection import train_test_split
+import statsmodels.formula.api as smf
+import numpy as np
+import joblib
+
+#import user created modules
+#below solution provided by chatGPT
+from assets.python_files.modGlobal import modGlobal
+from assets.python_files.modETL_Library import modETL
 
 ## Development Roadmap
 

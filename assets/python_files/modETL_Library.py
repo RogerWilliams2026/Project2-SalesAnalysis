@@ -9,7 +9,8 @@ import plotly.express as px
 import nbformat as nbf
 import modGlobal
 
-
+# Modified 18/07/2026 By Roger Williams
+#
 # ETL library for extracting, transforming, and loading data from pandas supported file formats
 #
 
@@ -38,7 +39,7 @@ import modGlobal
 
 
 # why not use?: """
-# the comments in the above are parsed to warnings appear about invalid escape sequence
+# the comments in the above are parsed so warnings appear about invalid escape sequence
 # for EVERTY \ in the comments so used the old way instead where everything after the #
 # symbol is ignored!
 
@@ -291,6 +292,54 @@ def funcReadExtractedFilesReturnDictionary():
     print("\n")
     #passback dictionary of all DataFrame       
     return dictDataFrames
+
+
+       
+def funcReadWorkingFilesReturnDictionary():
+    """
+    Created 19/08/2026 By Roger Williams
+    
+    Reads csv file(s) from WorkingFiles and returns a dictionary of dataframes with the
+    KEY as the filename and the VALUE as the dataframe 
+
+    RETURNS
+    
+    dictionary of dataframes with the KEY as the filename and the VALUE as the dataframe
+    
+    """
+    lstFiles = []
+    dfTemp = None
+    
+    #get list of files in WorkingFiles folder
+    lstFiles = os.listdir(os.getcwd() + modGlobal.CNST_STR_DATA_WORKINGPATH)
+    
+    #create dictionary to hold dataframes
+    dictDataFrames = {}
+    
+    #loop through files and read into dictionary
+    for strFile in lstFiles:
+        #if csv
+        if strFile.endswith(".csv"):
+            #read csv into dataframe
+            dfTemp = pd.read_csv(os.getcwd() + modGlobal.CNST_STR_DATA_WORKINGPATH  + "/" + strFile)
+            #name DataFrame
+            dfTemp.attrs["name"] = strFile[: strFile.index(".")]
+            
+            #add DataFrame to dictionary setting KEY to filename (no path)
+            dictDataFrames[strFile] = dfTemp
+            
+    print( f"{len(dictDataFrames)} csv Files Read Into DataFrames\n") 
+    print("DataFrames Created:")
+    
+    #show user what DataFrames have been created
+    for strKey in dictDataFrames.keys():
+        print(f"{strKey}")
+    
+    print("\n")
+    #passback dictionary of all DataFrame       
+    return dictDataFrames
+
+
 
 
    

@@ -100,9 +100,9 @@ import modGlobal
 # funcReadVisualisationFilesReturnDictionary - reads csv file(s) from VisualisationFiles and returns a dictionary of 
 #                                 dataframes with the  KEY as the filename and the VALUE as the dataframe 
 #
+# funcReadWorkingFilesReturnDictionary - reads csv file(s) from WorkingFiles and returns a dictionary of fils found
 #
-#
-#
+# funcGetCategoricalValueDistribution - Displays the value distribution for each categorical column in the passed DataFrame
 #
 #
 #
@@ -120,14 +120,17 @@ import modGlobal
 #    funcReadFileReturnDataFrame - reads a specific csv file and returns a DataFrame of the data
 #
 # funcSaveDataFrameToWorkingFile - saves the passed cleaned DataFrame as csv in the working folder
+# funcReadWorkingFilesReturnDictionary - reads csv file(s) from WorkingFiles and returns a dictionary of fils found
 #
 # Statistics:
 #
 # funcGetStructure - Displays the schema structure of passed DataFrame
 # funcGetStatistics - Displays basic statistics for the passed DataFrame
 # funcGetUniqueValues - Displays total unique values for each column in the passed DataFrame
+# funcGetCategoricalValueDistribution - Displays the value distribution for each categorical column in the passed DataFrame
 # funcTransformValues - Transform passed column(s) to another datatype returns transformed DataFrame
 # funcGetColumnSkew - Displays the skew for each data column in the passed DataFrame ONLY if not categorical data!
+#
 # Transform/Clean:
 #
 # funcFillMissingValues - Fills missing values in passed column(s) with passed value(s) returns modified DataFrame
@@ -527,12 +530,17 @@ def funcSaveDataFrameToCleanedFile(dfWhat : pd.DataFrame):
     saves the passed cleaned DataFrame as csv in the cleaned folder
     makes a copy in the visualisations folder 
     
+    if name has _working in it remove
+    
     VARS
     
     dfWhat      - DataFrame to save as csv
 
    
     """
+    if dfWhat.attrs["name"].endswith(modGlobal.CNST_STR_FILENAME_APPEND_WORKING):
+       dfWhat.attrs["name"] = dfWhat.attrs["name"][:dfWhat.attrs["name"].index(modGlobal.CNST_STR_FILENAME_APPEND_WORKING)]
+    
     if os.path.exists(os.getcwd() + modGlobal.CNST_STR_DATA_WORKINGPATH + "/" + dfWhat.attrs["name"] + modGlobal.CNST_STR_FILENAME_APPEND_CLEANED + ".csv"):
        os.remove(os.getcwd() + modGlobal.CNST_STR_DATA_WORKINGPATH + "/" + dfWhat.attrs["name"] + modGlobal.CNST_STR_FILENAME_APPEND_CLEANED + ".csv")
    
@@ -607,7 +615,30 @@ def funcGetStructure(dfWhat : pd.DataFrame):
 
     print()
     
-      
+
+    
+def funcGetCategoricalValueDistribution(dfWhat : pd.DataFrame):
+    """
+    Created 18/08/2026 By Roger Williams
+    
+    Displays the value distribution for each categorical column in the passed DataFrame:
+    
+    VARS
+    
+    dfWhat - DataFrame to display value distribution of
+
+
+    """
+    
+    #print header
+    print("DataFrame Categorical Value Distribution:")
+    print("=" * 40)
+    
+    for colColumn in dfWhat.select_dtypes(include=["str","category","object"]).columns:
+        print( f"[{colColumn}] Value Distribution:")
+        print( dfWhat[colColumn].value_counts())  
+        print("\n")    
+       
       
 def funcGetStatistics(dfWhat : pd.DataFrame):
     """

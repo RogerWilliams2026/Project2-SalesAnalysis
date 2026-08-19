@@ -262,3 +262,30 @@ _)_
 _fig.show()_
 
 This code was heavily modified to fit naming conventions and how I needed the plot to look.
+
+**Scenario Eight:**
+
+Been developing an ETL library and wanted to use it in this project, however have no idea how to
+do it, so asked chatGPT for a solution with this question:
+
+Am using jupyter notebook for a prooject and the notebook is in a subfolder. However I wish to
+use some libraries in a another folder in the same project how can I import them?
+
+I attempted using:
+
+import modGlobal
+import modETL_Library as modETL
+
+It replied with a lot of code examples but the most important part was this:
+
+_import sys_
+_from pathlib import Path_
+
+_project_root = Path.cwd().parent_
+_if str(project_root / "assets" / "python_files") not in sys.path:_
+_sys.path.insert(0, str(project_root / "assets" / "python_files"))_
+
+_import modGlobal_  
+_import modETL_Library as modETL_
+
+This works so used in everwhere!

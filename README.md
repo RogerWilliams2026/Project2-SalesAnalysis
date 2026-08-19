@@ -53,8 +53,8 @@ Describes in detail how I used AI to help with issues with the project.
 
 In order to create the combined csv file and see the plots these notebooks need to be run in order from the Jupyter_notebooks folder:
 
-- Notebook_ETL_Sales_Stores_DataSet.ipynb <- ETL for Sales_Stores_DataSet.csv
 - Notebook_ETL_Sales_DataSet.ipynb <- ETL for Sales_DataSet.csv
+- Notebook_ETL_Sales_Stores_DataSet.ipynb <- ETL for Sales_Stores_DataSet.csv
 - Notebook_ETL_Sales_Features_DataSet.ipynb <- ETL for Sales_Features_DataSet.csv
 - Notebook_ETL_Sales_Combined_DataSet.ipynb <- Combines the 3 cleaned csv files into one for visualisation
 - Notebook_ML.ipynb <- Contains the machine learning model for experimentation

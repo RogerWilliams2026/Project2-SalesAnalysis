@@ -829,12 +829,8 @@ def funcTransformValues(dfSource : pd.DataFrame, dictWhat : dict):
     #loop through columns and transform
     for colColumn, strType in dictWhat.items():
         if strType == "pandasdatetime":
-       #     try:
               #if in format that needs to be converted  
               dfWhat[colColumn] = pd.to_datetime(dfWhat[colColumn], format="%d/%m/%Y") #, errors="coerce")
-            #  dfWhat[colColumn] = dfWhat[colColumn].dt.y 
-         #   except:
-        #        pass
         else: 
            dfWhat[colColumn] = dfWhat[colColumn].astype(strType)
         

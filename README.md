@@ -57,6 +57,7 @@ In order to create the combined csv file and see the plots these notebooks need 
 - Notebook_ETL_Sales_Stores_DataSet.ipynb <- ETL for Sales_Stores_DataSet.csv
 - Notebook_ETL_Sales_Features_DataSet.ipynb <- ETL for Sales_Features_DataSet.csv
 - Notebook_ETL_Sales_Combined_DataSet.ipynb <- Combines the 3 cleaned csv files into one for visualisation
+- Notebook EDA_Sales_DataSet.ipynb <- Contains the EDA for the combined csv file
 - Notebook_ML.ipynb <- Contains the machine learning model for experimentation
 - Notebook_Visualisations1.ipynb <- Contains the visualisations for the old hypotheses
 - Notebook_Visualisations2.ipynb <- Contains the visualisations for the new hopthesis and ML

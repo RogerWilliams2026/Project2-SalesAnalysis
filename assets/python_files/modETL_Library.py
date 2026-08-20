@@ -867,7 +867,7 @@ def funcGetColumnSkew(dfWhat : pd.DataFrame):
     fltKurtosis = 0.0
     fig = None
     axis = None
-    
+    colColumn = None
     lstSkew = list()
     lstCol = list()
     

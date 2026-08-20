@@ -289,3 +289,22 @@ _import modGlobal_
 _import modETL_Library as modETL_
 
 This works so used in everwhere!
+
+**Scenario Nine:**
+
+When trying to get the skew/kurtosis of a column in a DataFrame, if the column was a date column it would throw an error. So asked chatGPT for a solution with this question:
+
+Pandas is it possible to get skew kurtosis for datetime column?
+
+It replied with a lot of code examples but I liked the look of this one:
+
+_df["date"] = pd.to_datetime(df["date"])_
+
+_x = (df["date"] - df["date"].min()).dt.total_seconds()_
+
+_skew = x.skew()_
+_kurtosis = x.kurt()_
+
+_print(skew, kurtosis)_
+
+Modified to fit my code and it works!

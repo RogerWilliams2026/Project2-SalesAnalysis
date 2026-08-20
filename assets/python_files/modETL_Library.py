@@ -861,6 +861,7 @@ def funcGetColumnSkew(dfWhat : pd.DataFrame):
     dictSkew = dict()
     dfTemp = pd.DataFrame()
     fltKurtosis = 0.0
+    objTemp = None
     fig = None
     axis = None
     colColumn = None
@@ -876,17 +877,37 @@ def funcGetColumnSkew(dfWhat : pd.DataFrame):
     for colColumn, objValue in dfWhat.items():
         #ignore categorical values
         if not objValue.dtype.name == "str":
-           #put number of spaces to make column name 20 characters long
-           strTemp = funcGetSpaces(20, colColumn)
-           #print column data
-           
-           fltSkew = dfWhat[colColumn].skew()
-           fltKurtosis = dfWhat[colColumn].kurtosis()
-           #store skew for later use in histogram
-           dictSkew[colColumn] = fltSkew
-                      
-           lstSkew.append(fltSkew)
-           lstCol.append(colColumn)           
+           if "datetime64" in objValue.dtype.name: 
+              dfTemp = dfWhat.copy()
+              #solution provided by ChatGPT heavily modified
+              dfTemp[colColumn] = pd.to_datetime(dfTemp[colColumn], format="%d/%m/%Y")
+              objTemp = (dfTemp[colColumn] - dfTemp[colColumn].min()).dt.total_seconds()
+              #sprinkle soe Feature Engineering so the Q-Q plot will work
+              dfTemp[f"{colColumn}2"] = (dfTemp[colColumn] - dfTemp[colColumn].min()).dt.total_seconds()
+              #put number of spaces to make column name 20 characters long
+              strTemp = funcGetSpaces(20, colColumn)
+              #store skew/kurtosis                
+              fltSkew = objTemp.skew()
+              fltKurtosis = objTemp.kurtosis()
+              #store skew for later use in histogram
+              dictSkew[colColumn] = fltSkew
+                            
+              lstSkew.append(fltSkew)
+              lstCol.append(colColumn)           
+
+
+           #end solution provided by ChatGPT
+           else: 
+               #put number of spaces to make column name 20 characters long
+               strTemp = funcGetSpaces(20, colColumn)
+               #store skew/kurtosis
+               fltSkew = dfWhat[colColumn].skew()
+               fltKurtosis = dfWhat[colColumn].kurtosis()
+               #store skew for later use in histogram
+               dictSkew[colColumn] = fltSkew
+                            
+               lstSkew.append(fltSkew)
+               lstCol.append(colColumn)           
            
            if fltSkew > 1:
                print(f"{colColumn}{strTemp} Skew: {fltSkew:.2f} - Highly Positively Skewed Kurtosis: {fltKurtosis:.2f}")
@@ -902,21 +923,39 @@ def funcGetColumnSkew(dfWhat : pd.DataFrame):
     for colColumn, objValue in dfWhat.items():           
         #ignore categorical values
         if not objValue.dtype.name == "str":
-           #configure plot
-           fig, axis = plt.subplots(figsize=(12, 6))
-           #put number of spaces to make column name 20 characters long
-           strTemp = funcGetSpaces(20, colColumn)
-           #print column data
-           print(f"Q-Q Plot For Column: {colColumn}")
-           print("=" * 30)
-           stats.probplot(dfWhat[colColumn], dist="norm", plot=plt)
-           plt.title(f"Q-Q Plot For Column: {colColumn}", fontweight="bold")
-           axis.set_xlabel(f"Q-Q Plot For Column: {colColumn}")
-           axis.set_ylabel("Theoretical Quantiles")
+           if "datetime64" in objValue.dtype.name: 
+              #configure plot
+              fig, axis = plt.subplots(figsize=(12, 6))
+              #put number of spaces to make column name 20 characters long
+              strTemp = funcGetSpaces(20, f"{colColumn}2")
+              #print column data
+              print(f"Q-Q Plot For Column: {colColumn}2")
+              print("=" * 30)
+              stats.probplot(dfTemp[f"{colColumn}2"], dist="norm", plot=plt)
+              plt.title(f"Q-Q Plot For Column: {colColumn}2", fontweight="bold")
+              axis.set_xlabel(f"Q-Q Plot For Column: {colColumn}2")
+              axis.set_ylabel("Theoretical Quantiles")
 
-           plt.tight_layout()
-           plt.show()
-           print("\n")  
+              plt.tight_layout()
+              plt.show()
+              print("\n")  
+           
+           else:                
+              #configure plot
+              fig, axis = plt.subplots(figsize=(12, 6))
+              #put number of spaces to make column name 20 characters long
+              strTemp = funcGetSpaces(20, colColumn)
+              #print column data
+              print(f"Q-Q Plot For Column: {colColumn}")
+              print("=" * 30)
+              stats.probplot(dfWhat[colColumn], dist="norm", plot=plt)
+              plt.title(f"Q-Q Plot For Column: {colColumn}", fontweight="bold")
+              axis.set_xlabel(f"Q-Q Plot For Column: {colColumn}")
+              axis.set_ylabel("Theoretical Quantiles")
+
+              plt.tight_layout()
+              plt.show()
+              print("\n")  
            
     print()
 

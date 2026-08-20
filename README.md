@@ -86,9 +86,9 @@ The business hopes this information will help it plan its store growth and marke
   Validation: Compare store types with weekly sales.
 - Does store size affect profitability? If so, how much in the last 12 months?
   Validation: Compare store size with weekly sales
-- Weekly Sales by Store, Store Type and Department Last 12 Months
+- What are the Weekly Sales by Store, Store Type and Department Last 12 Months?
   Validation: Compare weekly sales by store and department using appropriate plot
-- Impact of markdowns on sales during holiday periods in the last 12 months by store
+- What is the impact of markdowns on sales during holiday periods in the last 12 months by store?
   Validation: Accumulate and visualise markdown data per store during holiday periods
 
 **Future Ideas To Propose To The Customer:**
@@ -96,6 +96,8 @@ The business hopes this information will help it plan its store growth and marke
 - What are the most profitable departments per store?
 - What are the top 10 stores in terms of profitability?
 - What are the bottom 10 stores in terms of profitability?
+- What are the predicted sales for store type A for next year?
+- What are the predicted sales for stores in areas of high unemployment?
 
 ## Project Plan
 

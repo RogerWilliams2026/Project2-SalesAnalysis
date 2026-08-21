@@ -308,3 +308,58 @@ _kurtosis = x.kurt()_
 _print(skew, kurtosis)_
 
 Modified to fit my code and it works!
+
+**Scenario Ten:**
+
+Stumped by one of my own hypothesis!
+
+It was this one:
+
+What are the most profitable departments per store in the last 12 months?
+
+In SQL could do it very quickly but in pandas??
+
+So asked chatGPT for a solution with this question:
+
+pandas using Walmart datset with files "features data set.csv" "sales data-set.csv" "stores data-set.csv" using a plot how can I answer this question: What are the most profitable departments per store for 2012?
+
+It replied with code some to do with ETL which I don't need as using a combined DataFrame so I used this code:
+
+_profit = (_
+_sales_2012_
+_.groupby(["Store", "Dept"])["Weekly_Sales"]_
+_.sum()_
+_.reset_index()_
+_)_
+
+_most_profitable = (_
+_profit.loc[profit.groupby("Store")["Weekly_Sales"].idxmax()]_
+_.sort_values("Store")_
+_)_
+
+_print(most_profitable)_
+
+_most_profitable["Store_Dept"] = (_
+
+- "Store " + most_profitable["Store"].astype(str) +\*
+- " - Dept " + most_profitable["Dept"].astype(str)\*
+  _)_
+
+_plt.figure(figsize=(12, 10))_
+
+_sns.barplot(_
+
+- data=most_profitable,\*
+- x="Weekly_Sales",\*
+- y="Store_Dept",\*
+- color="steelblue"\*
+  \*)
+
+_plt.title("Highest-Selling Department for Each Store — 2012")_
+_plt.xlabel("Total Sales ($)")_
+_plt.ylabel("Store and Department")_
+
+_plt.tight_layout()_
+_plt.show()_
+
+Modified to fit my code and it works!

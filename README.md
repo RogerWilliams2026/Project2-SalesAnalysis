@@ -111,9 +111,13 @@ The business hopes this information will help it plan its store growth and marke
 
 - What are the most profitable departments per store in the last 12 months?
 - What are the top 10 stores in terms of profitability in the last 12 months?
-- What are the bottom 10 stores in terms of profitability in the last 12 months?
-- What are the predicted sales for store type A for next year?
-- What are the predicted sales for stores in areas of high unemployment for next year?
+- What are the bottom 10 stores in terms of profitability in the last 12 months
+- What percentage of customers were unemployed per store by month for last year?
+- What percentage of customer were unemployed by store size last year?  
+
+Machine Learning Predictions:
+- What are the predicted sales for store types by month for next year?
+- What are the predicted sales for stores in areas of high unemployment by month for next year?
 
 ## Project Plan
 

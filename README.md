@@ -1,8 +1,11 @@
-# Project 1 - Sales Analysis
+# Project 2 - Sales Analysis
 
-Project 1 is a data analysis project that sales data to answer business questions and validate hypotheses. The project involves data cleaning, transformation, and visualization using Python and various libraries.
+Project s a data analysis project that sales data to answer business questions and validate hypotheses. The project involves data cleaning, transformation, and visualisation using Python and various libraries.
+
+Uses Project 1 and enchances upon it with advanced EDA and machine learning
 
 # ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+
 
 ## Dataset Content
 
@@ -12,18 +15,28 @@ Dataset package given by customer contains 3 related raw CSV files:
 - Sales_Features_DataSet.csv
 - Sales_DataSet.csv
 
-These shall be cleaned and transformed into 3 cleaned CSV files, then combined into a single CSV file for visualisation.
+These shall be renamed so they follow a naming convention, then cleaned and transformed into   
+3 cleaned CSV files, then combined into a single CSV file for visualisation.
 
 **Project Folder Structure:**
 
-- Data <- No files stored here
-- Data/CleanedDataSets <- Contains cleaned data as csv files
-- Data/OriginalFiles <- Contains the original data csv files
-- Data/VisualisationDataSet <- Contains a combined csv file for visualisation
-- Documents <- Contains file: What_AI_Used_For.md (terrible grammar)
-- Jupyter_Notebooks <- Contains the Jupyter Notebooks used for ETL and Visualisation
+- assets <- No files stored here is container folder for project notebooks etc
+
+Subfolders:  
+- css <- Contains file: style.css for streamlit
+- csv <- Contains csv files during processing from raw to visualisation
+  Subfolders:
+  - CleanedFiles <- Contains cleaned data as csv files
+  - ExtractedFiles <- Contains files extracted from ZIP files
+  - OriginalFiles <- Contains the original data csv files
+  - VisualisationFiles <- Contains a combined csv file for visualisation
+- documents <- Contains files: 
+  - What_AI_Used_For.md (terrible grammar)  
+  - Project 2 Sales Analysis Dashboard Design.pdf 
+- jupyter_notebooks <- Contains the Jupyter Notebooks used for ETL and Visualisation  
 - Report <- Contains the report for the project
 - Report/Images <- Contains images used in the report and all plot images
+- streamlit <- contains files needed for Heroku to show streamlit dashboard
 
 **Jupyter_Notebooks:**
 
@@ -31,11 +44,14 @@ There are separate notebooks for ETL on each csv file. THis was done so I can ma
 
 **Notebook Files:**
 
+- Notebook_EDA_Sales_DataSet.ipynb <- EDA for Sales_Combined_Dataset_Visualization.csv
 - Notebook_ETL_Sales_Stores_DataSet.ipynb <- ETL for Sales_Stores_DataSet.csv
 - Notebook_ETL_Sales_DataSet.ipynb <- ETL for Sales_DataSet.csv
 - Notebook_ETL_Sales_Features_DataSet.ipynb <- ETL for Sales_Features_DataSet.csv
 - Notebook_ETL_Sales_Combined_DataSet.ipynb <- Combines the 3 cleaned csv files into one for visualisation
-- Notebook_Visualisations.ipynb <- Contains the visualisations for the hypotheses
+- Notebook_Visualisations1.ipynb <- Contains the visualisations for the hypotheses
+- Notebook_Visualisations2.ipynb <- Contains the visualisations for the new hypotheses
+
 
 **Report File**
 
@@ -58,7 +74,7 @@ In order to create the combined csv file and see the plots these notebooks need 
 - Notebook_ETL_Sales_Features_DataSet.ipynb <- ETL for Sales_Features_DataSet.csv
 - Notebook_ETL_Sales_Combined_DataSet.ipynb <- Combines the 3 cleaned csv files into one for visualisation
 - Notebook EDA_Sales_DataSet.ipynb <- Contains the EDA for the combined csv file
-- Notebook_ML.ipynb <- Contains the machine learning model for experimentation
+- Notebook_ML.ipynb <- Contains the machine learning model for experimentation has own visualisations
 - Notebook_Visualisations1.ipynb <- Contains the visualisations for the old hypotheses
 - Notebook_Visualisations2.ipynb <- Contains the visualisations for the new hopthesis and ML
 
@@ -91,7 +107,7 @@ The business hopes this information will help it plan its store growth and marke
 - What is the impact of markdowns on sales during holiday periods in the last 12 months by store?
   Validation: Accumulate and visualise markdown data per store during holiday periods
 
-**Future Ideas To Propose To The Customer:**
+**New Hypothesis:**
 
 - What are the most profitable departments per store?
 - What are the top 10 stores in terms of profitability?
@@ -131,6 +147,8 @@ Felt an interactive approach lends itself better to this type of analysis, and a
 _Hypothesis 6: Impact of markdowns on sales during holiday periods in the last 12 months by store_
 Chose sunburst plot to show the sales and indiviudal markdowns per store during holiday periods as other types produced large confusing visualisations or cramped plots due to sheer amount of data.
 Again felt an interactive approach lends itself better to this type of analysis.
+
+
 
 ## Analysis techniques used
 
@@ -224,6 +242,9 @@ from assets.python_files.modETL_Library import modETL
   Developer ignorance perhaps??
 - Trying to visualise plots with plotly.express produced an error stating nbformat was not installed.  
   Used pip install nbformat and added to dependencies in Notebook_Visualisations.ipynb to fix the issue
+- Decided to use an ETL library I had created but could not get python to import it so had to resort to chatGPT  
+  to get the methodology to use it! 
+
 
 ## New Skills and Tools
 

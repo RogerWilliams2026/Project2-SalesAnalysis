@@ -212,6 +212,10 @@ def funcCreateDirectories():
     if not os.path.exists(os.getcwd() + modGlobal.CNST_STR_DATA_CLEANEDPATH):
         os.mkdir(os.getcwd() + modGlobal.CNST_STR_DATA_CLEANEDPATH)
 
+    #create pipelines folder
+    if not os.path.exists(os.getcwd() + modGlobal.CNST_STR_PIPELINES_PATH):
+        os.mkdir(os.getcwd() + modGlobal.CNST_STR_PIPELINES_PATH)
+
     print("Folder Structure Created Successfully!")
     
 

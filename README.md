@@ -116,7 +116,7 @@ The business hopes this information will help it plan its store growth and marke
 - What percentage of customer were unemployed by store size last year?  
 
 Machine Learning Predictions:
-- What are the predicted sales for store types by month for next year?
+- What are the predicted sales for stores by month for next year?
 - What are the predicted sales for stores in areas of high unemployment by month for next year?
 
 ## Project Plan

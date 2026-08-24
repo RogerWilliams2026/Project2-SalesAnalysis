@@ -32,6 +32,7 @@ body,
 .block-container {
   top: 0px;
   padding-top: 0px;
+  padding-bottom: 0px;
   padding-left: 1rem;
   padding-right: 1rem;
 
@@ -69,32 +70,9 @@ header[data-testid="stHeader"] {
   top: 0px;
   margin-top: -10px;
   padding-left: 10px;
-  padding-top: 10px;
+  padding-top: 12px;
   width: 200px;
 }
-/* 
-[data-testid="stRadio"] {
-  color: white;
-  background-color: green;
-  width: 200px;
-  height: 120px;
-  padding-left: 20px;
-  padding-top: 20px;
-}
-
-[data-testid="stRadio"] p {
-  color: yellow;
-  font-weight: 800;
-  font-size: medium;
-}
-
-/*colour of info message */
-.stAlert p {
-  color: rgb(187, 241, 248);
-  font-weight: 800;
-  text-align: center;
-}
-
 /* change alert message div size and text padding */
 div[data-testid="stAlert"] > div {
   margin-bottom: 0px;
@@ -103,9 +81,18 @@ div[data-testid="stAlert"] > div {
   margin-right: 0px;
 
   padding-bottom: 0px;
-  padding-top: 0px;
+  padding-top: 4px;
   padding-left: 0px;
   padding-right: 0px;
+
+  height: 30px;
+}
+
+/*colour of info message */
+.stAlert p {
+  color: rgb(187, 241, 248);
+  font-weight: 800;
+  text-align: center;
 }
 
 /* [data-testid="stVerticalBlock"] {
@@ -162,7 +149,9 @@ div[data-testid="stAlert"] > div {
 /* container - tab 1 */
 .st-key-conTab1 p {
   padding-top: 0px;
-
+  padding-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
   /* line-height: 0.8ch; */
 }
 

@@ -25,7 +25,7 @@ from matplotlib.ticker import MultipleLocator
 # from sklearn.metrics import mean_absolute_error, mean_squared_error
 # from sklearn.model_selection import train_test_split
 # import statsmodels.formula.api as smf
-# import numpy as np
+import numpy as np
 
 import joblib
 #
@@ -40,11 +40,11 @@ import joblib
 #VARS
 
 #file paths
-CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_TEST_STREAMLIT_PATH =  "streamlit/assets/pipelines/linear_regression_hypothesis12_test_pipeline.pkl"
-CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_TEST_STREAMLIT_PATH = "streamlit/assets/pipelines/randomforest_hypothesis12_test_pipeline.pkl"
+CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_TEST_STREAMLIT_PATH =  "assets/pipelines/linear_regression_hypothesis12_test_pipeline.pkl"
+CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_TEST_STREAMLIT_PATH = "assets/pipelines/randomforest_hypothesis12_test_pipeline.pkl"
 
-CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH =  "streamlit/assets/pipelines/linear_regression_hypothesis12_pipeline.pkl"
-CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH =  "streamlit/assets/pipelines/randomforest_hypothesis12_pipeline.pkl"
+CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH =  "assets/pipelines/linear_regression_hypothesis12_pipeline.pkl"
+CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH =  "assets/pipelines/randomforest_hypothesis12_pipeline.pkl"
 
 CNST_STR_SALES_COMBINED_DATASET = "assets/csv/Data/Sales_Combined_DataSet_Visualisation.csv"
 CNST_STR_FEATURES_DATASET = "assets/csv/Data/Features_DataSet_Visualisation.csv"
@@ -182,6 +182,9 @@ tabTab10 = None
 tabTab11 = None
 tabTab12 = None
 tabTab13 = None
+tabTab14 = None
+tabTab15 = None
+tabTab16 = None
 
 tabHypothesis = None
 
@@ -205,9 +208,20 @@ dfSales_Combined_DataSet_Summary = pd.DataFrame()
 dfSunburst_DataSet = pd.DataFrame()
 dfSales_Combined_DataSet_Profit = pd.DataFrame()
 dfSales_Combined_DataSet_HighestProfit = pd.DataFrame()
+dfSalesDataML_Work = pd.DataFrame()
+dfPrevious = pd.DataFrame()
+dfPreviousSales = pd.DataFrame()
+dfActualSales = pd.DataFrame()
+dfPredictedSales = pd.DataFrame()
+dfPlot = pd.DataFrame()
+dfXTest = pd.DataFrame()
+
+
 
 lstStoreRanges  = list()
 lstMarkdownColumns = list()
+lstFeatures = list()
+
 fltSkew = 0.0
 fltKurtosis = 0.0
 intYear = 0
@@ -215,6 +229,9 @@ intStartYear = 0
 intEndYear = 0
 intNum = 0
 dteStartDate = None
+objPipeline = None
+ax = None
+fig = None
 
  
 # Function to load custom CSS
@@ -934,24 +951,1248 @@ match radRadioButtons:
         conContainerTab11_Sub.plotly_chart(fig, use_container_width=True) 
           
    
+   case "ML Test":
    
-#******tab 11*******
-        #tab 11 hypothesis 11 - ML prediction
+#******tab 12*******
+        #tab 12 hypothesis 12 - ML prediction
         #Note: last year in data is: 2012
         conSection4 = conContainerMain.container(border=False, width="stretch", key="conSection4", height=860)
         conSection4Title = conSection4.container(border=False, width="stretch", key="conSection4Title", height=40)
          
         #create tab control which houses containers for the tab data (split into columns!)        
-        tabTab12, tabTab13= conSection4.tabs([
-          "Machine Learning Tests", "Machne Learning Prediction"
+        tabTab12, tabTab13, tabTab14, tabTab15 = conSection4.tabs([
+          "Machine Learning Tests Linear Regression", "Machine Learning Tests Random Forest","Machine Learning Prediction - Linear Regression",
+          "Machine Learning Prediction - Random Forest"
         ])  
 
+        conSection4Title.info("Can Machine Learning Predict Sales Values That Match The Last 12 Months?")
         conSection4Tab = tabTab12.container(border=True, width="stretch", height=780)
-        conSection4Title.info("Can Meachine Learning Predict Sales Values That Match The Last 12 Months?")
+  
+        #now plot the results
+
+        dfSalesDataML_Work = dfSales_Combined_DataSet.copy() 
+        dfSalesDataML_Work = dfSalesDataML_Work.dropna(subset=["Date"])
+
+        #sprinkle some feature engineering
+        dfSalesDataML_Work["Year"] = dfSalesDataML_Work["Date"].dt.year
+        dfSalesDataML_Work["Month"] = dfSalesDataML_Work["Date"].dt.month
+        dfSalesDataML_Work["Day"] = dfSalesDataML_Work["Date"].dt.day
+        dfSalesDataML_Work["DayOfWeek"] = dfSalesDataML_Work    ["Date"].dt.dayofweek
+        dfSalesDataML_Work["WeekOfYear"] = dfSalesDataML_Work["Date"].dt.isocalendar().week.astype(int)
+        dfSalesDataML_Work["Quarter"] = dfSalesDataML_Work["Date"].dt.quarter
+
+        #Thanks to StackOverflow user chimpsarehungry for the solution
+        dfSalesDataML_Work["MonthSin"] = np.sin(2 * np.pi * dfSalesDataML_Work["Month"] / 12)
+        dfSalesDataML_Work["MonthCos"] = np.cos(2 * np.pi * dfSalesDataML_Work["Month"] / 12)
+
+        dfSalesDataML_Work["IsHoliday"] = dfSalesDataML_Work["IsHoliday"].astype(int)
+
+        #load linear regression pipeline
+        objPipeline = joblib.load(CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_TEST_STREAMLIT_PATH)
+
+        #set year range
+        intYear= 2012
+        intPreviousYear = intYear - 1
+
+        dfTest = dfSalesDataML_Work.copy()
+        dfTest = dfTest[dfTest["Year"] == intYear]
+
+        dfPrevious = dfSalesDataML_Work.copy()
+        dfPrevious = dfPrevious[dfPrevious["Year"] == intPreviousYear]
+
+        #show year range
+        print("Test year:", intYear)
+        print("Previous year:", intPreviousYear)
+
+        #show row data
+        print("Test rows:", len(dfTest))
+        print("Previous year rows:", len(dfPrevious))
+
+        #configure features
+        lstFeatures = [
+           "Store",
+           "Dept",
+           "IsHoliday",
+           "Year",
+           "Month",
+           "Day",
+           "DayOfWeek",
+           "WeekOfYear",
+           "Quarter",
+           "MonthSin",
+           "MonthCos"
+        ]
+
+        #create model prediction
+        dfXTest = dfTest[lstFeatures]
+        dfTest["Predicted_Sales"] = objPipeline.predict(dfXTest)
+
+
+        #get actual sales to compare
+        dfActualSales = (
+           dfTest
+           .groupby(
+              ["Date", "WeekOfYear"]
+           )["Weekly_Sales"]
+           .sum()
+           .reset_index()
+        )
+
+        #make sure we don't get a clash fof names in the plot!
+        dfActualSales = dfActualSales.rename(
+           columns={
+              "Weekly_Sales": "Actual_Sales"
+           }
+        )
+
+
+        #get predicted sales to compare
+        dfPredictedSales = (
+           dfTest
+           .groupby(
+              ["Date", "WeekOfYear"]
+           )["Predicted_Sales"]
+           .sum()
+           .reset_index()
+        )
+
+
+        #get previous sales by week to compare
+        dfPreviousSales = (
+           dfPrevious
+           .groupby(
+              "WeekOfYear"
+           )["Weekly_Sales"]
+           .sum()
+           .reset_index()
+        )
+
+        #make sure we don't get a clash of names in the plot!
+        dfPreviousSales = dfPreviousSales.rename(
+           columns={
+              "Weekly_Sales": "Previous_Year_Sales"
+           }
+        )
+
+
+        #merge plots
+        dfPlot = dfActualSales.merge(
+           dfPredictedSales,
+           on=["Date", "WeekOfYear"],
+           how="left"
+        )
+
+        #merge previous year
+        dfPlot = dfPlot.merge(
+           dfPreviousSales,
+           on="WeekOfYear",
+           how="left"
+        )
+
+        #sort by Date
+        dfPlot = dfPlot.sort_values("Date")
+
+        #check for missing previous year values
+        dfMissingPrevious = dfPlot["Previous_Year_Sales"].isna().sum()
+
+        #create plot
+        fig, ax = plt.subplots(figsize=(15, 7))
+
+        # Set background colours
+        fig.set_facecolor("#070707")
+        ax.set_facecolor("#070707")         
+        
+        #plot actual sales
+        ax.plot(
+           dfPlot["Date"],
+           dfPlot["Actual_Sales"],
+           label="Actual Sales",
+           color="white",
+           linewidth=2
+        )
+
+        #plot predictions
+        ax.plot(
+           dfPlot["Date"],
+           dfPlot["Predicted_Sales"],
+           label="Linear Regression Prediction",
+           color="red",
+           linewidth=2
+        )
+
+        #plot previous year sales as comparison
+        ax.plot(
+           dfPlot["Date"],
+           dfPlot["Previous_Year_Sales"],
+           label="Previous Year Sales",
+           color="blue",
+           linestyle="--",
+           linewidth=2
+        )
+
+        #configure plot
+        ax.set_title(
+           "Sales - Linear Regression vs Previous Year",
+           fontsize=16,
+           color="white"
+        )
+
+        ax.set_xlabel("Date", fontsize=12)
+        ax.set_ylabel("Weekly Sales", fontsize=12)
+
+        ax.legend(loc="best")
+        ax.grid(True, alpha=0.3)
+        plt.xticks(rotation=45, color="white")
+        plt.yticks(color="white")
+
+        plt.tight_layout()
+
+        #show plot in Streamlit
+        conSection4Tab.pyplot(fig, use_container_width=True)
+
+        expExpander1 = conSection4Tab.expander("Show Data Used For Plot", expanded=False, key="expExpander1")
+        expExpander1.dataframe(dfPlot, use_container_width=True)
+  
+  
+#******tab 13*******
+        #tab 13 hypothesis 13 - ML prediction
+        #Note: last year in data is: 2012  
+        conContainerTab13_Sub = tabTab13.container(border=True, width="stretch", key="conTab13Sub", height=780)
+   
+        #now plot the results
+        dfSalesDataML_Work = dfSales_Combined_DataSet.copy() 
+        #random forest plot test compare last years sales with predicted values for same year
+
+        dfSalesDataML_Work = dfSalesDataML_Work.dropna(subset=["Date"])
+
+        #sprinkle some feature engineering
+        dfSalesDataML_Work["Year"] = dfSalesDataML_Work["Date"].dt.year
+        dfSalesDataML_Work["Month"] = dfSalesDataML_Work["Date"].dt.month
+        dfSalesDataML_Work["Day"] = dfSalesDataML_Work["Date"].dt.day
+        dfSalesDataML_Work["DayOfWeek"] = dfSalesDataML_Work["Date"].dt.dayofweek
+        dfSalesDataML_Work["WeekOfYear"] = dfSalesDataML_Work["Date"].dt.isocalendar().week.astype(int)
+        dfSalesDataML_Work["Quarter"] = dfSalesDataML_Work["Date"].dt.quarter
+
+        #cyclical month features thanks to StackOverflow user chimpsarehungry for the solution
+        dfSalesDataML_Work["MonthSin"] = np.sin(2 * np.pi * dfSalesDataML_Work["Month"] / 12)
+        dfSalesDataML_Work["MonthCos"] = np.cos(2 * np.pi * dfSalesDataML_Work["Month"] / 12)
+
+        dfSalesDataML_Work["IsHoliday"] = dfSalesDataML_Work["IsHoliday"].astype(int)
 
 
 
- 
+        #load pipeline for random forest
+        objPipeline = joblib.load(CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_TEST_STREAMLIT_PATH)
+
+        #set year range
+        intYear= 2012
+        intPreviousYear = intYear - 1
+        dfTest = dfSalesDataML_Work.copy()
+        dfTest = dfTest[dfTest["Year"] == intYear]
+        dfPrevious = dfSalesDataML_Work.copy()
+        dfPrevious = dfPrevious[dfPrevious["Year"] == intPreviousYear].copy()
+
+        #configure features
+        lstFeatures = [
+           "Store",
+           "Dept",
+           "IsHoliday",
+           "Year",
+           "Month",
+           "Day",
+           "DayOfWeek",
+           "WeekOfYear",
+           "Quarter",
+           "MonthSin",
+           "MonthCos"
+        ]
+
+        #get predictions
+        dfXTest = dfTest[lstFeatures]
+        dfTest["Predicted_Sales"] = objPipeline.predict(dfXTest)
+
+        #get actual sales
+        dfActualSales = (
+           dfTest
+           .groupby(
+              ["Date", "WeekOfYear"]
+           )["Weekly_Sales"]
+           .sum()
+           .reset_index()
+        )
+
+        #make sure no name clashes in the plot!
+        dfActualSales = dfActualSales.rename(
+           columns={
+              "Weekly_Sales": "Actual_Sales"
+           }
+        )
+
+        #get predicted sales
+        dfPredictedSales = (
+           dfTest
+           .groupby(
+              ["Date", "WeekOfYear"]
+           )["Predicted_Sales"]
+           .sum()
+           .reset_index()
+        )
+
+        #get previous year sales
+        dfPreviousSales = (
+           dfPrevious
+           .groupby(
+              "WeekOfYear"
+           )["Weekly_Sales"]
+           .sum()
+           .reset_index()
+        )
+
+        #make sure no name clashes in the plot!
+        dfPreviousSales = dfPreviousSales.rename(
+           columns={
+              "Weekly_Sales": "Previous_Year_Sales"
+           }
+        )
+
+        #merge DataFrames
+        dfPlot = dfActualSales.merge(
+           dfPredictedSales,
+           on=["Date", "WeekOfYear"],
+           how="left"
+        )
+
+        #merge DataFrames
+        dfPlot = dfPlot.merge(
+           dfPreviousSales,
+           on="WeekOfYear",
+           how="left"
+        )
+
+        #Sort by date
+        dfPlot = dfPlot.sort_values("Date")
+
+        #check missing previous-year values
+        dfMissingPrevious = (
+           dfPlot["Previous_Year_Sales"]
+           .isna()
+           .sum()
+        )
+
+        #create plot
+        fig, ax = plt.subplots(figsize=(15, 7))
+        # Set background colours
+        fig.set_facecolor("#070707")
+        ax.set_facecolor("#070707")        
+
+        #create actual sales plot
+        plt.plot(
+           dfPlot["Date"],
+           dfPlot["Actual_Sales"],
+           label="Actual Sales",
+           color="white",
+           linewidth=2
+        )
+
+        #plot predictions
+        plt.plot(
+           dfPlot["Date"],
+           dfPlot["Predicted_Sales"],
+           label="Random Forest Prediction",
+           color="red",
+           linewidth=2
+        )
+
+        #plot previous years sales
+        plt.plot(   
+           dfPlot["Date"],
+           dfPlot["Previous_Year_Sales"],
+           label="Previous Year Sales",
+           color="blue",
+           linestyle="--",
+           linewidth=2
+        )
+
+        #format plot
+        plt.title("Sales - Random Forest vs Previous Year", fontsize=16)
+        plt.xlabel("Date", fontsize=12)
+        plt.ylabel("Weekly Sales", fontsize=12)
+        #prefer best fit
+        plt.legend(loc="best")
+        plt.grid(True, alpha=0.3)
+        #make sure ticks are readable
+        plt.xticks(rotation=45, color="white")
+        plt.tight_layout()
+        plt.yticks(color="white")
+
+        ax.set_title(
+           "Sales - Random Forest vs Previous Year",
+           fontsize=16,
+           color="white"
+        )
+
+        ax.set_xlabel("Date", fontsize=12)
+        ax.set_ylabel("Weekly Sales", fontsize=12)
+        plt.xticks(rotation=45, color="white")
+        ax.legend(loc="best")
+        ax.grid(True, alpha=0.3)
+
+        # Show plot in Streamlit
+        conContainerTab13_Sub.pyplot(fig, use_container_width=True)
+
+        expExpander2 = conContainerTab13_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander2")
+        expExpander2.dataframe(dfPlot, use_container_width=True)
   
    
+    
+#******tab 14*******
+        #tab 14 hypothesis 13 - ML prediction
+        #Note: last year in data is: 2012  
+        conContainerTab14_Sub = tabTab14.container(border=True, width="stretch", key="conTab14Sub", height=780)
+
+        #load csv files
+        dfFeatures = pd.read_csv(CNST_STR_FEATURES_DATASET)
+        dfSales = pd.read_csv(CNST_STR_SALES_DATASET)
+        dfStores = pd.read_csv(CNST_STR_STORES_DATASET)
    
+        #convert Date to datetime
+        dfFeatures["Date"] = pd.to_datetime(
+           dfFeatures["Date"],
+           errors="coerce"
+        )
+
+        dfSales["Date"] = pd.to_datetime(
+           dfSales["Date"],
+           errors="coerce"
+        )
+
+
+        #remove invalid dates
+        dfFeatures = dfFeatures.dropna(
+           subset=["Date"]
+        )
+
+        dfSales = dfSales.dropna(
+           subset=["Date"]
+        )
+
+        #merge features and stores
+        dfFeaturesStores = dfFeatures.merge(
+           dfStores,
+           on="Store",
+           how="left"
+        )
+
+
+        #merge sales with features
+        dfTrain = dfSales.merge(
+           dfFeaturesStores,
+           on=[
+              "Store",
+              "Date",
+              "IsHoliday"
+           ],
+           how="left"
+        )
+
+        #create forecast datas
+        dfForecast = dfFeaturesStores.copy()
+        dfFeatures = dfFeatures[
+           dfFeatures["Date"] >
+           dfSales["Date"].max()
+        ]
+
+        #we need predictions for every Store/Department!
+        #get rid of duplicates
+        dfDepts = dfSales[ ["Store", "Dept"] ].drop_duplicates()
+
+        #merge forecast with departments 
+        dfForecast = dfForecast.merge(
+           dfDepts,
+           on="Store",
+           how="inner"
+        )
+
+        #sprinkle some feature engineering
+        #date features
+        dfTrain["Year"] = ( dfTrain["Date"].dt.year)
+        dfTrain["Month"] = ( dfTrain["Date"].dt.month)
+        dfTrain["Day"] = (dfTrain["Date"].dt.day)
+        dfTrain["DayOfWeek"] = (dfTrain["Date"].dt.dayofweek)
+        dfTrain["WeekOfYear"] = (dfTrain["Date"]
+           .dt.isocalendar()
+            .week
+            .astype(int)
+         )
+        dfTrain["Quarter"] = ( dfTrain["Date"].dt.quarter)
+        #cyclical features thanks to StackOverflow user chimpsarehungry for the solution
+        dfTrain["MonthSin"] = np.sin(2 * np.pi * dfTrain["Month"] / 12)
+        dfTrain["MonthCos"] = np.cos(2 * np.pi * dfTrain["Month"] / 12)
+        dfTrain["WeekSin"] = np.sin(2 * np.pi * dfTrain["WeekOfYear"] / 52)
+        dfTrain["WeekCos"] = np.cos(2 * np.pi * dfTrain["WeekOfYear"] / 52)
+
+        #holiday
+        dfTrain["IsHoliday"] = (dfTrain["IsHoliday"].astype(int))        
+        
+        
+        dfForecast["Year"] = ( dfForecast["Date"].dt.year)
+        dfForecast["Month"] = ( dfForecast["Date"].dt.month)
+        dfForecast["Day"] = (dfForecast["Date"].dt.day)
+        dfForecast["DayOfWeek"] = (dfForecast["Date"].dt.dayofweek)
+        dfForecast["WeekOfYear"] = (dfForecast["Date"]
+           .dt.isocalendar()
+            .week
+            .astype(int)
+         )
+        dfForecast["Quarter"] = ( dfForecast["Date"].dt.quarter)
+        #cyclical features thanks to StackOverflow user chimpsarehungry for the solution
+        dfForecast["MonthSin"] = np.sin(2 * np.pi * dfForecast["Month"] / 12)
+        dfForecast["MonthCos"] = np.cos(2 * np.pi * dfForecast["Month"] / 12)
+        dfForecast["WeekSin"] = np.sin(2 * np.pi * dfForecast["WeekOfYear"] / 52)
+        dfForecast["WeekCos"] = np.cos(2 * np.pi * dfForecast["WeekOfYear"] / 52)
+
+        #holiday
+        dfForecast["IsHoliday"] = (dfForecast["IsHoliday"].astype(int))    
+        
+        #define markdown columns
+        lstMarkdown = [
+           "MarkDown1",
+           "MarkDown2",
+           "MarkDown3",
+           "MarkDown4",
+           "MarkDown5"
+        ]
+
+
+        for column in lstMarkdown:
+           if column in dfTrain.columns:
+              dfTrain[column] = (
+                    dfTrain[column]
+                    .fillna(0)
+              )
+
+           if column in dfForecast.columns:
+              dfForecast[column] = (
+                    dfForecast[column]
+                    .fillna(0)
+              )
+
+
+        #define features
+        lstFeatures = [
+            # Store information
+            "Store",
+            "Dept",
+            "Store_Type",
+            "Size",
+
+            # Date information
+            "Year",
+            "Month",
+            "Day",
+            "DayOfWeek",
+            "WeekOfYear",
+            "Quarter",
+
+            # Cyclical features
+            "MonthSin",
+            "MonthCos",
+            "WeekSin",
+            "WeekCos",
+
+            # Holiday
+            "IsHoliday",
+
+            # Walmart economic features
+            "Temperature",
+            "Unemployment",
+
+            # Markdown
+            "MarkDown1",
+            "MarkDown2",
+            "MarkDown3",
+            "MarkDown4",
+            "MarkDown5"
+        ]
+
+        #load pipeline for random forest
+        objPipeline = joblib.load(CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH)
+    #    dfXTest = dfTest[lstFeatures]
+    #    dfTest["Predicted_Sales"] = objPipeline.predict(dfXTest)
+        #check columns
+      #   objMissingColumns = [
+      #      column
+      #      for column in lstFeatures
+      #      if column not in dfTrain.columns
+      #   ]
+
+        #missing columns?
+      #   if objMissingColumns:
+      #      raise ValueError(
+      #         f"Missing columns: {objMissingColumns}"
+      #      )
+
+
+        #setup X and y for training and forecasting
+      #   dfXTrain = dfTrain[lstFeatures]
+      #   dfyTrain = dfTrain[strTarget]
+      #   dfXForecast = dfForecast[lstFeatures]
+
+      #   #define numeric features
+      #   lstNumericFeatures = [
+      #      "Size",
+      #      "Year",
+      #      "Month",
+      #      "Day",
+      #      "DayOfWeek",
+      #      "WeekOfYear",
+      #      "Quarter",
+      #      "MonthSin",
+      #      "MonthCos",
+      #      "WeekSin",
+      #      "WeekCos",
+      #      "IsHoliday",
+      #      "Temperature",
+      #      "Unemployment",
+      #      "MarkDown1",
+      #      "MarkDown2",
+      #      "MarkDown3",
+      #      "MarkDown4",
+      #      "MarkDown5"
+      #   ]
+
+      #   #define categorical features
+      #   lstCategoricalFeatures = [
+      #      "Store",
+      #      "Dept",
+      #      "Store_Type"
+      #   ]
+
+      #   #configure numeric transformer
+      #   objNumericTransformer = Pipeline(
+      #      steps=[
+      #         (
+      #               "imputer",
+      #               SimpleImputer(
+      #                  strategy="median"
+      #               )
+      #         ),
+      #         (
+      #               "scaler",
+      #               StandardScaler()
+      #         )
+      #      ]
+      #   )
+
+      #   #configure categorical transformer
+      #   objCategoricalTransformer = Pipeline(
+      #      steps=[
+      #         (
+      #               "imputer",
+      #               SimpleImputer(
+      #                  strategy="most_frequent"
+      #               )
+      #         ),
+
+      #         (
+      #               "onehot",
+      #               OneHotEncoder(
+      #                  handle_unknown="ignore"
+      #               )
+      #         )
+      #      ]
+      #   )
+
+      #    #configure column transformer
+      #   objPreProcessor = ColumnTransformer(
+      #      transformers=[
+      #          (
+      #                "numeric",
+      #                objNumericTransformer,
+      #                lstNumericFeatures
+      #          ),
+
+      #          (
+      #                "categorical",
+      #                objCategoricalTransformer,
+      #                lstCategoricalFeatures
+      #          )
+      #       ]
+      #   )
+
+         #create linear regression model
+ #       objModel = LinearRegression()
+
+        #configure pipeline
+      #   objPipeline = Pipeline(
+      #       steps=[
+      #          (
+      #                "preprocessor",
+      #                objPreProcessor
+      #          ),
+      #          (
+      #                "model",
+      #                objModel
+      #          )
+      #       ]
+      #   )
+
+
+        #train model
+      #   objPipeline.fit(dfXTrain, dfyTrain)
+
+      #   #save pipeline to main folder
+      #   joblib.dump(
+      #      objPipeline,
+      #      CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_PATH
+      #   )
+
+      #   #save to sreamlit folder
+      #   joblib.dump(
+      #      objPipeline,
+      #      CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH
+      #   )
+
+        dfXForecast = dfForecast[lstFeatures]
+        dfForecast["Predicted_Sales"] = (
+           objPipeline.predict(
+              dfXForecast
+           )
+        )
+
+        #select 2013 predictions"
+        dfTest = dfForecast.copy()
+        dfTest = dfTest[ dfTest["Date"].dt.year == 2013]
+
+        #aggregate prediction values
+        dfForecast = (
+           dfTest
+           .groupby(
+              ["Date", "WeekOfYear"]
+           )["Predicted_Sales"]
+           .sum()
+           .reset_index()
+        )
+
+
+        #get actual sales for 2012 to compare with 2013 predictions
+        dfActualSales = dfTrain[
+           dfTrain["Year"] == 2012
+        ].copy()
+
+        #aggregate actual sales for 2012
+        dfPrevious = (
+           dfActualSales
+           .groupby(
+              "WeekOfYear"
+           )["Weekly_Sales"]
+           .sum()
+           .reset_index()
+        )
+
+        #make sure we don't get a clash of names in the plot!
+        dfPrevious = dfPrevious.rename(
+           columns={
+              "Weekly_Sales":
+              "Previous_Year_Sales"
+           }
+        )
+
+
+        #merge forecast with previous year sales for comparison
+        dfPlot= dfForecast.merge(
+           dfPrevious,
+           on="WeekOfYear",
+           how="left"
+        )
+
+        #sort by Date
+        dfPlot = dfPlot.sort_values("Date")
+
+        #create plot
+        fig, ax = plt.subplots(figsize=(15, 7))
+        # Set background colours
+        fig.set_facecolor("#070707")
+        ax.set_facecolor("#070707") 
+
+        plt.plot(
+           dfPlot["Date"],
+           dfPlot["Predicted_Sales"],
+           color="red",
+           linewidth=2,
+           label="2013 Predicted Sales"
+        )
+
+        plt.title(
+           "Linear Regression - 2013 Sales Forecast",
+           fontsize=16
+        )
+        
+        ax.set_title(
+           "Linear Regression - 2013 Sales Forecast",
+           fontsize=16,
+           color="white"
+        )
+
+        ax.set_xlabel("Date", fontsize=12, color="white")
+        ax.set_ylabel("Weekly Sales", fontsize=12, color="white")
+
+        ax.legend(loc="best")
+        ax.grid(True, alpha=0.3)
+        plt.xlabel("Date")
+        plt.ylabel("Weekly Sales")
+        plt.legend()
+        plt.grid(alpha=0.3)
+        plt.xticks(rotation=45, color="white")
+        plt.yticks(color="white")
+        plt.tight_layout()
+      
+  
+        # Show plot in Streamlit
+        conContainerTab14_Sub.pyplot(fig, use_container_width=True)
+
+        expExpander3 = conContainerTab14_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander3")
+        expExpander3.dataframe(dfPlot, use_container_width=True)
+  
+
+
+#******tab 15*******
+        #tab 15 hypothesis 12 - ML prediction
+        #Note: last year in data is: 2012  
+        #random forest predict next years sales
+        conContainerTab15_Sub = tabTab15.container(border=True, width="stretch", key="conTab15Sub", height=780)
+
+        #load csv files
+        dfFeatures = pd.read_csv(CNST_STR_FEATURES_DATASET)
+        dfSales = pd.read_csv(CNST_STR_SALES_DATASET)
+        dfStores = pd.read_csv(CNST_STR_STORES_DATASET)
+
+
+        #convert Date to datetime
+        dfFeatures["Date"] = pd.to_datetime(
+           dfFeatures["Date"],
+           errors="coerce"
+        )
+
+        dfSales["Date"] = pd.to_datetime(
+           dfSales["Date"],
+           errors="coerce"
+        )
+
+        #delete rows with invalid dates
+        dfFeatures = dfFeatures.dropna(
+           subset=["Date"]
+        )
+
+        dfSales = dfSales.dropna(
+           subset=["Date"]
+        )
+
+
+        #merge features and stores
+        dfFeaturesStores = dfFeatures.merge(
+           dfStores,
+           on="Store",
+           how="left"
+        )
+
+        #merge sales and featuresstores
+        dfTraining = dfSales.merge(
+           dfFeaturesStores,
+           on=[
+              "Store",
+              "Date",
+              "IsHoliday"
+           ],
+           how="left"
+        )
+
+
+        #get forecast data
+        dfForecast = dfFeaturesStores[
+           dfFeaturesStores["Date"] >
+           dfSales["Date"].max()
+        ].copy()
+
+
+        store_depts = dfSales[
+           ["Store", "Dept"]
+        ].drop_duplicates()
+
+
+        dfForecast = dfForecast.merge(
+           store_depts,
+           on="Store",
+           how="inner"
+        )
+
+        #sprinkle some feature engineering
+        #date features
+        dfTrain["Year"] = ( dfTrain["Date"].dt.year)
+        dfTrain["Month"] = ( dfTrain["Date"].dt.month)
+        dfTrain["Day"] = (dfTrain["Date"].dt.day)
+        dfTrain["DayOfWeek"] = (dfTrain["Date"].dt.dayofweek)
+        dfTrain["WeekOfYear"] = (dfTrain["Date"]
+           .dt.isocalendar()
+            .week
+            .astype(int)
+         )
+        dfTrain["Quarter"] = ( dfTrain["Date"].dt.quarter)
+        #cyclical features thanks to StackOverflow user chimpsarehungry for the solution
+        dfTrain["MonthSin"] = np.sin(2 * np.pi * dfTrain["Month"] / 12)
+        dfTrain["MonthCos"] = np.cos(2 * np.pi * dfTrain["Month"] / 12)
+        dfTrain["WeekSin"] = np.sin(2 * np.pi * dfTrain["WeekOfYear"] / 52)
+        dfTrain["WeekCos"] = np.cos(2 * np.pi * dfTrain["WeekOfYear"] / 52)
+
+        #holiday
+        dfTrain["IsHoliday"] = (dfTrain["IsHoliday"].astype(int))        
+        
+        
+        dfForecast["Year"] = ( dfForecast["Date"].dt.year)
+        dfForecast["Month"] = ( dfForecast["Date"].dt.month)
+        dfForecast["Day"] = (dfForecast["Date"].dt.day)
+        dfForecast["DayOfWeek"] = (dfForecast["Date"].dt.dayofweek)
+        dfForecast["WeekOfYear"] = (dfForecast["Date"]
+           .dt.isocalendar()
+            .week
+            .astype(int)
+         )
+        dfForecast["Quarter"] = ( dfForecast["Date"].dt.quarter)
+        #cyclical features thanks to StackOverflow user chimpsarehungry for the solution
+        dfForecast["MonthSin"] = np.sin(2 * np.pi * dfForecast["Month"] / 12)
+        dfForecast["MonthCos"] = np.cos(2 * np.pi * dfForecast["Month"] / 12)
+        dfForecast["WeekSin"] = np.sin(2 * np.pi * dfForecast["WeekOfYear"] / 52)
+        dfForecast["WeekCos"] = np.cos(2 * np.pi * dfForecast["WeekOfYear"] / 52)
+
+        #holiday
+        dfForecast["IsHoliday"] = (dfForecast["IsHoliday"].astype(int))    
+
+
+       #define markdown columns
+        markdown_columns = [
+           "MarkDown1",
+           "MarkDown2",
+           "MarkDown3",
+           "MarkDown4",
+           "MarkDown5"
+        ]
+
+
+        for column in markdown_columns:
+           if column in dfTraining.columns:
+              dfTraining[column] = (
+                    dfTraining[column]
+                     .fillna(0)
+              )
+
+           if column in dfForecast.columns:
+              dfForecast[column] = (
+                    dfForecast[column]
+                    .fillna(0)
+              )
+
+        #define features
+        lstFeatures = [
+            "Store",
+            "Dept",
+            "Store_Type",
+            "Size",
+
+            "Year",
+            "Month",
+            "Day",
+            "DayOfWeek",
+            "WeekOfYear",
+            "Quarter",
+
+            "MonthSin",
+            "MonthCos",
+            "WeekSin",
+            "WeekCos",
+
+            "IsHoliday",
+
+            "Temperature",
+            "Unemployment",
+
+            "MarkDown1",
+            "MarkDown2",
+            "MarkDown3",
+            "MarkDown4",
+            "MarkDown5"
+         ]
+
+
+        dfXtrain = dfTrain[
+           lstFeatures
+        ]
+
+        dfyTrain = dfTrain[
+           "Weekly_Sales"
+        ]
+
+        dfXForecast = dfForecast[
+           lstFeatures
+        ]
+
+       
+ 
+         # lstNumericFeatures = [
+
+         #    "Size",
+
+         #    "Year",
+         #    "Month",
+         #    "Day",
+         #    "DayOfWeek",
+         #    "WeekOfYear",
+         #    "Quarter",
+
+         #    "MonthSin",
+         #    "MonthCos",
+         #    "WeekSin",
+         #    "WeekCos",
+
+         #    "IsHoliday",
+
+         #    "Temperature",
+         #    "Unemployment",
+
+         #    "MarkDown1",
+         #    "MarkDown2",
+         #    "MarkDown3",
+         #    "MarkDown4",
+         #    "MarkDown5"
+         # ]
+
+
+         # lstCategoricalFeatures = [
+         #    "Store",
+         #    "Dept",
+         #    "Store_Type"
+         # ]
+
+
+         # objNumericTransformer = Pipeline(
+         #    steps=[
+         #       (
+         #             "imputer",
+         #             SimpleImputer(
+         #                strategy="median"
+         #             )
+         #       )
+         #    ]
+         # )
+
+
+         # objCategoricalTransformer = Pipeline(
+         #    steps=[
+         #       (
+         #             "imputer",
+         #             SimpleImputer(
+         #                strategy="most_frequent"
+         #             )
+         #       ),
+         #       (
+         #             "onehot",
+         #             OneHotEncoder(
+         #                handle_unknown="ignore"
+         #             )
+         #       )
+         #    ]
+         # )
+
+
+         # objPreProcessor = ColumnTransformer(
+         #    transformers=[
+
+         #       (
+         #             "numeric",
+         #             objNumericTransformer,
+         #             lstNumericFeatures
+         #       ),
+
+         #       (
+         #             "categorical",
+         #             objCategoricalTransformer,
+         #             lstCategoricalFeatures
+         #       )
+         #    ]
+         # )
+
+        #load pipeline
+      #   objModel = RandomForestRegressor(
+      #       n_estimators=20,  #50
+      #       max_depth=20,
+      #       min_samples_split=5,
+      #       min_samples_leaf=2,
+      #       random_state=42,
+      #       n_jobs=-1
+      #    )
+
+
+         # objPipeline = Pipeline(
+         #    steps=[
+
+         #       (
+         #             "preprocessor",
+         #             objPreProcessor
+         #       ),
+
+         #       (
+         #             "model",
+         #             objModel
+         #       )
+         #    ]
+         # )
+
+
+         # # ============================================================
+         # # TRAIN
+         # # ============================================================
+
+         # print(
+         #    "\nTraining Random Forest..."
+         # )
+
+         # objPipeline.fit(
+         #    dfXtrain,
+         #    dfyTrain
+         # )
+
+         # print(
+         #    "Training complete."
+         # )
+
+
+         # ============================================================
+         # SAVE PIPELINE
+         # ============================================================
+
+         # #save
+         # joblib.dump(
+         #    objPipeline,
+         #    CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_PATH
+         # )
+
+         # #save to streamlit folder
+         # joblib.dump(
+         #    objPipeline,
+         #    CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH
+         # )
+
+         # print(
+         #    "\nPipeline saved:"
+         # )
+
+         # print(CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_PATH)
+         # print(CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH)
+
+        objPipeline = joblib.load(CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH)
+        #predict sales for 2013
+        dfForecast["Predicted_Sales"] = (
+            objPipeline.predict(
+               dfXForecast
+            )
+        )
+
+
+        dfPredictedSales = dfForecast[
+           dfForecast["Date"].dt.year == 2013
+        ].copy()
+
+        #aggregate
+        dfForecastSales = (
+           dfPredictedSales
+            .groupby(
+               ["Date", "WeekOfYear"]
+            )["Predicted_Sales"]
+            .sum()
+            .reset_index()
+        )
+
+
+        #actual sales 2012
+        dfActualSales = dfTrain.copy() 
+        
+        dfActualSales = dfActualSales[
+            dfActualSales["Year"] == 2012
+        ]
+
+
+        dfPreviousSales = (
+            dfActualSales
+            .groupby(
+               "WeekOfYear"
+            )["Weekly_Sales"]
+            .sum()
+            .reset_index()
+        )
+
+
+        dfPreviousSales = dfPreviousSales.rename(
+            columns={
+               "Weekly_Sales":
+               "Previous_Year_Sales"
+            }
+        )
+
+
+        #merge forecastsales and previoussales
+        dfPlot = dfForecastSales.merge(
+            dfPreviousSales,
+            on="WeekOfYear",
+            how="left"
+        )
+
+        #sort by date
+        dfPlot = dfPlot.sort_values("Date")
+
+        #create plot
+        fig, ax = plt.subplots(figsize=(15, 7))
+        # Set background colours
+        fig.set_facecolor("#070707")
+        ax.set_facecolor("#070707") 
+
+        plt.plot(
+           dfPlot["Date"],
+           dfPlot["Predicted_Sales"],
+           color="red",
+           linewidth=2,
+           label="2013 Predicted Sales"
+        )
+
+        plt.title(
+           "Random Forest - 2013 Sales Forecast",
+           fontsize=16
+        )
+        
+        ax.set_title(
+           "Random Forest - 2013 Sales Forecast",
+           fontsize=16,
+           color="white"
+        )
+
+        ax.set_xlabel("Date", fontsize=12, color="white")
+        ax.set_ylabel("Weekly Sales", fontsize=12, color="white")
+
+        ax.legend(loc="best")
+        ax.grid(True, alpha=0.3)
+        plt.xlabel("Date")
+        plt.ylabel("Weekly Sales")
+        plt.legend()
+        plt.grid(alpha=0.3)
+        plt.xticks(rotation=45, color="white")
+        plt.yticks(color="white")
+        plt.tight_layout()
+        plt.figure(
+            figsize=(15, 7)
+        )
+
+        plt.tight_layout()
+
+       # Show plot in Streamlit
+        conContainerTab15_Sub.pyplot(fig, use_container_width=True)
+
+        expExpander4 = conContainerTab15_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander4")
+        expExpander4.dataframe(dfPlot, use_container_width=True)

@@ -231,12 +231,12 @@ div[data-testid="stAlert"] > div {
 } */
 
 /* format expanders for tab 1 */
-.st-key-expTab1-1,
-.st-key-expTab1-2,
-.st-key-expTab1-3,
-.st-key-expTab1-4,
-.st-key-expTab1-5,
-.st-key-expTab1-6 p {
+.st-key-expExpander1,
+.st-key-expExpander2,
+.st-key-expExpander3,
+.st-key-expExpander4,
+.st-key-expExpander5,
+.st-key-expExpander6 p {
   padding-top: 0px;
   padding-bottom: 0px;
   margin-top: 0px;

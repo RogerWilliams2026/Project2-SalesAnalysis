@@ -1,4 +1,7 @@
 
+from ast import Interactive
+
+from pygments.unistring import No
 import streamlit as st
 import pandas as pd
 import seaborn as sns
@@ -105,6 +108,21 @@ conSection5Tab = None
 conSection6Tab = None
 conSection7Tab = None
 conSection8Tab = None
+
+conSectionFooter1 = None
+conSectionFooter2 = None
+conSectionFooter3 = None
+conSectionFooter4 = None
+conSectionFooter5 = None
+conSectionFooter6 = None
+conSectionFooter7 = None
+conSectionFooter8 = None
+conSectionFooter9 = None
+conSectionFooter10 = None
+conSectionFooter11 = None
+conSectionFooter12 = None
+conSectionFooter13 = None
+conSectionFooter14 = None
 
 
 conOverview = None
@@ -298,11 +316,25 @@ match radRadioButtons:
         #  unsafe_allow_html=True)
         conOverview.info("Overview")
         conOverview.markdown("### Purpose of The Analysis")
-        conOverview.write("This test came about after the Met office declared the first heatwave. Was it **really** a heatwave? The event lasted"
-                             "for four days, then temperatures seemed to cool slightly (but not by much), then same happened again the next week.")
-        conOverview.write("Hmmmm.. I thought is this a 'coincidence' that two heatwaves occur back-to-back or is it simply Summer?")
-        conOverview.write(" ")
-        conOverview.write("On the 'Hypothesis' page I dig deep into the data and attempt to answer this question!")
+        conOverview.write("Provides insights into the performance of the business in key areas such as: " +
+                          "sales trends and the impact of various externalfactors on sales.")
+        conOverview.write("All analysis is done as requested based on the last 12 months of data")
+        conOverview.write()
+        conOverview.write("Analysis Produced:")
+        conOverview.write("- Are sales increased if weather is hotter or colder in the last 12 months?")
+        conOverview.write("- Sales differences between holiday and non-holiday weeks per store in the last 12 months")
+        conOverview.write("- What is most profitable store type in the last 12 months?")
+        conOverview.write("- Does store size affect profitability? If so, how much in the last 12 months?")
+        conOverview.write("- What are the Weekly Sales by Store, Store Type and Department Last 12 Months?")
+        conOverview.write("- What is the impact of markdowns on sales during holiday periods in the last 12 months by store?")
+        conOverview.write("- What are the most profitable departments per store in the last 12 months?")
+        conOverview.write("- What are the top 10 stores in terms of profitability in the last 12 months?")
+        conOverview.write("- What are the bottom 10 stores in terms of profitability in the last 12 months?")
+        conOverview.write("- What percentage of customers were unemployed per store by month for last year?")
+        conOverview.write("- What percentage of customer were unemployed by store size last year?")  
+        conOverview.write("- What are the predicted sales for stores by month for next year?")
+   
+        
    case "Hypothesis 1 -4": 
  #******tab 1*******  
         #plotly visualisation for hypothesis 1 - are sales increased if weather is hotter or colder in the last 12 months? 
@@ -354,6 +386,7 @@ match radRadioButtons:
         fig.update_layout(
            xaxis_title="Temperature (°C)",
            yaxis_title="Weekly Sales (£)", 
+           title_x = 0.3
         )
              
         #remove after testing
@@ -362,8 +395,15 @@ match radRadioButtons:
         #end code copied from chatGPT
 
         conSection1Tab.plotly_chart(fig, use_container_width=True, key="figTab1") 
+        expExpander5 =  conSection1Tab.expander("Show Data Used For Plot", expanded=False, key="expExpander5")
+        expExpander5.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)
+        conSection1Tab.write("Note: in order for the 'ticks' to show on the axes Plotly needs to be version 5.8 or higher") 
+   
+        conSectionFooter1 = conSection1Tab.container(border=False, width="stretch", key="conSectionFooter1", height=400)
+        conSectionFooter1.write("As we can see from the above visualisation, there is a correlation between sales and weather.")
+        conSectionFooter1.write("There is a clear variance at extreme parts of the temperature range and during the centre range of temperature approximately 42-58 Fahrenheit. So clearly temperature is an effective factor in sales, _but_ other factors could be at play such as the environmental conditions a particular store is in.")
+        conSectionFooter1.write("Deeper analysis preferably by stores in a sales region would offer a better visualisation of the question. ")
          
- 
  
  #******tab 2*******   
         #plotly visualisation for hypothesis 2 - Sales Differences Between holiday and Non Holiday Weeks per Store Over last 12 Months
@@ -384,14 +424,18 @@ match radRadioButtons:
               "Weekly_Sales": "Total Weekly Sales"
            },
            #set plot size
-           height=600,
+           height=500,
            width=1050
         )
 
+        fig.update_layout(title_x = 0.3)        
         conContainerTab2_Sub.plotly_chart(fig, use_container_width=True, key="figTab2") 
-         
+        expExpander6 =  conContainerTab2_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander6")
+        expExpander6.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)         
   
-  
+        conSectionFooter2 = conContainerTab2_Sub.container(border=False, width="stretch", key="conSectionFooter2", height=400)
+        conSectionFooter2.write("Due to the large amount of data I chose a boxplot style visualisation to show the distribution of sales by store type. Also it allows us to see the outliers in the data and the variance of sales by store, which gives us a quick visual depiction of how holiday weeks affects sales directly.")
+        conSectionFooter2.write("We can deduce that holiday weeks have a positive effect on sales, and that the variance of sales is greater during holiday weeks than non holiday weeks. Clearly store size also pays a relationship between holiday and non holiday sales volumes, but we can see simply and clearly the effect a holiday week has on footfall and sales.")
 
  #******tab 3*******  
         #plotly visualisation for hypothesis 3 - What is most profitable store type over the last 12 months?
@@ -423,8 +467,8 @@ match radRadioButtons:
               "Weekly_Sales": "Total Weekly Sales"
            },
            #set plot size
-           height=600,
-           width=1050
+           height=400,
+           width=800
         )
 
         #by default plotly will show 1B, 2B in the y axis so change it to something more understandable
@@ -433,11 +477,13 @@ match radRadioButtons:
            tickformat=","
         )
  
+        fig.update_layout(title_x = 0.3)        
         conContainerTab3_Sub.plotly_chart(fig, use_container_width=True, key="figTab3") 
-         
-   
-   
-   
+        expExpander7 =  conContainerTab3_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander7")
+        expExpander7.dataframe(dfSales_Combined_DataSet_StoreType, use_container_width=True)         
+        conSectionFooter3 = conContainerTab3_Sub.container(border=False, width="stretch", key="conSectionFooter3", height=400)   
+        conSectionFooter3.write("This simple yet direct visualisation show the direct difference between the store _types_ and sales.") 
+        conSectionFooter3.write("It is clear that the type 1 store is the most profitable store type in the last 12 months, and that the type 3 store is the least profitable store type in the last 12 months, but being a different type may by nature have a smaller customer based, but does not imply that it is not a profitable one in comparision to its market and customer base.")
 
    
  #******tab 4*******    
@@ -472,8 +518,8 @@ match radRadioButtons:
 
         #read through DataFrame see if store number is in range
         #Note: this is probably a mute step but is a a god way of validating the result BEFORE
-        #      creating a plot
-        intNum = 4
+        #create plots
+        intNum = 8
         
         for objStores in lstStoreRanges:
            #add row to new DataFrame
@@ -495,9 +541,17 @@ match radRadioButtons:
            #set title
            plt.title(f"Most Profitable Store By Size Over Last 12 Months - Stores: {min(objStores)}-{max(objStores)}",
                      fontsize=20)
-           #need to use pyplot for seaborn plots
+           #need to use pyplot for seaborn plots     
            conContainerTab4_Sub.pyplot(fig, use_container_width=True) 
+           expExpander8 =  conContainerTab4_Sub.expander("Show Data Used For Plot", expanded=False, key=f"expExpander{intNum}")
+           expExpander8.dataframe(dfSales_Combined_DataSet_SubSet, use_container_width=True)         
            intNum += 1
+       
+        conSectionFooter4 = conContainerTab4_Sub.container(border=False, width="stretch", key="conSectionFooter4", height=400)
+        conSectionFooter4.write("An interesting visualisation that shows the correlation between store size and sales. It is clear that there is a positive correlation between store size and sales, ")
+        conSectionFooter4.write("but it is not a linear correlation, as we can see from the plot, and remember a smaller stores is not necessarily a less profitable store, as it may have a ")
+        conSectionFooter4.write("smaller customer base, but is still profitable in its own right _but_ suggest additional analysis regarding store _type_ in correlation to size and sales would be a logical next step.")
+        conSectionFooter4.write("In stores: 9, 19, 26, 37 all have high sales but store 26 is the highest. Further analysis of theses stores by _type_ could yield some fascinating insights.")  
 
          
    case "Hypothesis 5 - 8":                
@@ -559,18 +613,25 @@ match radRadioButtons:
 
         #set plot size
         fig.update_layout(
-           width=1000,
-           height=900
+           width=800,
+           height=600,
+           title_x = 0.3
         )
  
         conSection2Tab.plotly_chart(fig, use_container_width=True, key="figTab5") 
-         
-   
+        expExpander13 =  conSection2Tab.expander("Show Data Used For Plot", expanded=False, key="expExpander13")
+        expExpander13.dataframe(dfSunburst_DataSet, use_container_width=True)         
+        conSectionFooter5 = conSection2Tab.container(border=False, width="stretch", key="conSectionFooter5", height=400)
+        conSectionFooter5.write("As you are aware this is more than a visualisation it is an interactive tools, whereby you can \"drill down\" into the details and experience the data in a more dynamic way.")
+        conSectionFooter5.write("As we can see the visualisation is presented as a circular dial with the outer ring representing the weekly sales, next ring inwards is the store number then finally the centre ring is the store type.")
+        conSectionFooter5.write("Hovering the mouse over any section exposes brief details")          
+        conSectionFooter5.write("Now we can see each departments sales performance within that store, and as we can see when we hover the mouse over a department the information for that exact department.")
+        conSectionFooter5.write("Also take note in the previous image the centre ring clearly shows that store type 1 has the most profitable stores, and that store type 3 has the least profitable stores, but as we have seen previously this does not mean that they are not profitable in their own right. ") 
  
  #******tab 6*******  
         #plotly visualisation for hypothesis 6 - Impact of markdowns on sales during holiday periods in the last 12 months by store
         #Note: in order for the "ticks" to show on the axes Plotly needs to be version 5.8 or higher
-        conContainerTab6_Sub = tabTab6.container(border=True, width="stretch", key="conTab6Sub", height=780)
+        conContainerTab6_Sub = tabTab6.container(border=True, width="stretch", key="conTab6Sub", height=800)
         conContainerTab6_Sub.info("What is Most Profitable Store Type Over The Last 12 Months?")
 
         lstMarkdownColumns = ['MarkDown1','MarkDown2','MarkDown3','MarkDown4','MarkDown5']
@@ -630,12 +691,19 @@ match radRadioButtons:
 
         #set plot size
         fig.update_layout(
-           width=1000,
-           height=900
+           width=800,
+           height=600
         )
  
         conContainerTab6_Sub.plotly_chart(fig, use_container_width=True, key="figTab6") 
-         
+        expExpander14 = conContainerTab6_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander14")
+        expExpander14.dataframe(dfSales_Combined_DataSet_Final, use_container_width=True)         
+        conSectionFooter6 = conContainerTab6_Sub.container(border=False, width="stretch", key="conSectionFooter6", height=400)
+        conSectionFooter6.write("This is a nice detailed yet not too complex visualisation that just as you have discovered is the same methodology")
+        conSectionFooter6.write("as the previous visualisation in that it is interactive, so we can \"drill down\" into finer detail.")
+        conSectionFooter6.write("As we can see when we hover the mouse over a markdown section we can see the store number, the markdown amount and the sales for that store during the holiday period.")
+        conSectionFooter6.write("When we double click on a store number we can see detailed markdown information for the store:")
+        conSectionFooter6.write("Interactive insights are great when dealing (as we are) with a lot of data e,g. number of stores and their departments, and act as a great presentation tool for internal Q&A session regarding store performance and profitability.")   
      
  
  #******tab 7*******  
@@ -695,12 +763,18 @@ match radRadioButtons:
            yaxis_title="Store and Department",
            yaxis=dict(autorange="reversed"),  # Reverse the y-axis to have the highest sales at the top
            coloraxis_colorbar=dict(title="Total Sales (£)"),
-           title_x=0.5,  # Center the title
+           title_x=0.3,  # Center the title
            font=dict(size=12),  # Set font size for better readability
         )  
 
         conContainerTab7_Sub.plotly_chart(fig, use_container_width=True, key="figTab7") 
-          
+        expExpander15 = conContainerTab7_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander15")
+        expExpander15.dataframe(dfSales_Combined_DataSet_HighestProfit, use_container_width=True)         
+        conSectionFooter7 = conContainerTab7_Sub.container(border=False, width="stretch", key="conSectionFooter7", height=400)
+        conSectionFooter7.write("The plot shows the departments with the highest total sales for store during last 12 months")
+        conSectionFooter7.write("We can see that stores 13, 14 and 19 have the highest earning departments  ")
+        conSectionFooter7.write("Would be interesting to ask the question as to how big those stores are, is there a correlation?")
+              
         
  #******tab 8*******  
         #plotly visualisation for hypothesis 8 - What are the top 10 stores in terms of profitability in the last 12 months?
@@ -733,7 +807,7 @@ match radRadioButtons:
            y="Weekly_Sales",
            kind="barh",
            color="steelblue",
-           figsize=(10, 3),
+           figsize=(18, 6),
            legend=False
         )
 
@@ -762,8 +836,16 @@ match radRadioButtons:
         plt.tight_layout()
         
         conContainerTab8_Sub.pyplot(fig, use_container_width=True) 
-          
-   
+        expExpander16 = conContainerTab8_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander16")
+        expExpander16.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)         
+        conSectionFooter8 = conContainerTab8_Sub.container(border=False, width="stretch", key="conSectionFooter8", height=400)
+        conSectionFooter8.write("The plot shows the top 10 stores by total sales for the last 12 months")   
+        conSectionFooter8.write("We can see stores 4, 20 and 13 are the highest earners in this context ")  
+        conSectionFooter8.write("This is simple plot can cause a number of analytical questins to be asked:")  
+        conSectionFooter8.write("- What size are the stores?")  
+        conSectionFooter8.write("- Does store size pay a factor in sales?")  
+        conSectionFooter8.write("- What effect does the employent rate have on these stores?")  
+       
 
    case "Hypothesis 9 - 11":     
 
@@ -835,7 +917,15 @@ match radRadioButtons:
         plt.tight_layout()     
          
         conSection3Tab.pyplot(fig, use_container_width=True) 
-          
+        expExpander17 = conSection3Tab.expander("Show Data Used For Plot", expanded=False, key="expExpander17")
+        expExpander17.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)         
+        conSectionFooter9 = conSection3Tab.container(border=False, width="stretch", key="conSectionFooter9", height=400) 
+        conSectionFooter9.write("The plot shows the bottom 10 stores by total sales for the last 12 months")   
+        conSectionFooter9.write("We can see stores 33 adn 36 are the lowest earners in this context ")  
+        conSectionFooter9.write("This is simple plot can cause a number of analytical questins to be asked:")  
+        conSectionFooter9.write("- What size are the stores?")  
+        conSectionFooter9.write("- Does store size pay a factor in sales?")  
+        conSectionFooter9.write("- What effect does the employent rate have on these stores?")             
    
  
  #******tab 10*******  
@@ -869,14 +959,14 @@ match radRadioButtons:
            color="Store",
            title="Percentage of Unemployed Customers Per Store By Month For Last Year",
            markers=True,
-           height=600,
-           width=1000
+           height=500,
+           width=800
         )
 
         fig.update_layout(
            xaxis_title="Month",
            yaxis_title="Unemployment Rate (%)",
-           title_x=0.5,  # Centre the title
+           title_x=0.3,  # Centre the title
            font=dict(size=12), 
         )
 
@@ -892,8 +982,12 @@ match radRadioButtons:
          #show plot
         
         conContainerTab10_Sub.plotly_chart(fig, use_container_width=True) 
-          
-   
+        expExpander18 = conContainerTab10_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander18")
+        expExpander18.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)           
+        conSectionFooter10 = conContainerTab10_Sub.container(border=False, width="stretch", key="conSectionFooter10", height=400)
+        conSectionFooter10.write("Show an interesting trend that months 3, 6 and 8 (March, June and August) have a peak in unemployment rates")  
+        conSectionFooter10.write("This is an interesting insight as it shows that there is a correlation between the months and the unemployment rates, across ALL stores. ")
+        
  
  #******tab 11*******  
         #plotly visualisation for hypothesis 11 - What percentage of customer were unemployed by store size last year?
@@ -949,7 +1043,11 @@ match radRadioButtons:
       
         #show plot       
         conContainerTab11_Sub.plotly_chart(fig, use_container_width=True) 
-          
+        expExpander19 = conContainerTab11_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander19")
+        expExpander19.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)           
+        conSectionFooter11 = conContainerTab11_Sub.container(border=False, width="stretch", key="conSectionFooter11", height=400)
+        conSectionFooter11.write("Shows an interesting trend that store size is not a factor in the amount of unemployed customers per store")
+        conSectionFooter11.write("What makes this plot so cool, is you move it around and articulate the data points yourself exposing insights that words could miss")
    
    case "ML Test":
    
@@ -999,14 +1097,6 @@ match radRadioButtons:
 
         dfPrevious = dfSalesDataML_Work.copy()
         dfPrevious = dfPrevious[dfPrevious["Year"] == intPreviousYear]
-
-        #show year range
-        print("Test year:", intYear)
-        print("Previous year:", intPreviousYear)
-
-        #show row data
-        print("Test rows:", len(dfTest))
-        print("Previous year rows:", len(dfPrevious))
 
         #configure features
         lstFeatures = [
@@ -1096,7 +1186,7 @@ match radRadioButtons:
         dfMissingPrevious = dfPlot["Previous_Year_Sales"].isna().sum()
 
         #create plot
-        fig, ax = plt.subplots(figsize=(15, 7))
+        fig, ax = plt.subplots(figsize=(18, 7))
 
         # Set background colours
         fig.set_facecolor("#070707")
@@ -1149,10 +1239,12 @@ match radRadioButtons:
 
         #show plot in Streamlit
         conSection4Tab.pyplot(fig, use_container_width=True)
-
         expExpander1 = conSection4Tab.expander("Show Data Used For Plot", expanded=False, key="expExpander1")
         expExpander1.dataframe(dfPlot, use_container_width=True)
-  
+        conSectionFooter12 = conSection4Tab.container(border=False, width="stretch", key="conSectionFooter12", height=400)
+        conSectionFooter12.write("This a machine learning prediction, where using linear regression it attempts to predict last years sales")
+        conSectionFooter12.write("As we can see its does follow the mean after a fashion and the nature of the model is evens out the values")
+        conSectionFooter12.write("Hence no sudden spikes")
   
 #******tab 13*******
         #tab 13 hypothesis 13 - ML prediction
@@ -1280,7 +1372,7 @@ match radRadioButtons:
         )
 
         #create plot
-        fig, ax = plt.subplots(figsize=(15, 7))
+        fig, ax = plt.subplots(figsize=(18, 7))
         # Set background colours
         fig.set_facecolor("#070707")
         ax.set_facecolor("#070707")        
@@ -1342,7 +1434,12 @@ match radRadioButtons:
 
         expExpander2 = conContainerTab13_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander2")
         expExpander2.dataframe(dfPlot, use_container_width=True)
-  
+        conSectionFooter14 = conContainerTab13_Sub.container(border=False, width="stretch", key="conSectionFooter14", height=400)
+        conSectionFooter14.write("This a machine learning prediction, where using random forest it attempts to predict last years sales")
+        conSectionFooter14.write("As we can see it follows the trend more closely then the linear regression model, but still smooths the values")
+        conSectionFooter14.write("It follows the evenly which is important when making decisions based on machine learning models.")
+        
+        
    
     
 #******tab 14*******
@@ -1517,141 +1614,6 @@ match radRadioButtons:
 
         #load pipeline for random forest
         objPipeline = joblib.load(CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH)
-    #    dfXTest = dfTest[lstFeatures]
-    #    dfTest["Predicted_Sales"] = objPipeline.predict(dfXTest)
-        #check columns
-      #   objMissingColumns = [
-      #      column
-      #      for column in lstFeatures
-      #      if column not in dfTrain.columns
-      #   ]
-
-        #missing columns?
-      #   if objMissingColumns:
-      #      raise ValueError(
-      #         f"Missing columns: {objMissingColumns}"
-      #      )
-
-
-        #setup X and y for training and forecasting
-      #   dfXTrain = dfTrain[lstFeatures]
-      #   dfyTrain = dfTrain[strTarget]
-      #   dfXForecast = dfForecast[lstFeatures]
-
-      #   #define numeric features
-      #   lstNumericFeatures = [
-      #      "Size",
-      #      "Year",
-      #      "Month",
-      #      "Day",
-      #      "DayOfWeek",
-      #      "WeekOfYear",
-      #      "Quarter",
-      #      "MonthSin",
-      #      "MonthCos",
-      #      "WeekSin",
-      #      "WeekCos",
-      #      "IsHoliday",
-      #      "Temperature",
-      #      "Unemployment",
-      #      "MarkDown1",
-      #      "MarkDown2",
-      #      "MarkDown3",
-      #      "MarkDown4",
-      #      "MarkDown5"
-      #   ]
-
-      #   #define categorical features
-      #   lstCategoricalFeatures = [
-      #      "Store",
-      #      "Dept",
-      #      "Store_Type"
-      #   ]
-
-      #   #configure numeric transformer
-      #   objNumericTransformer = Pipeline(
-      #      steps=[
-      #         (
-      #               "imputer",
-      #               SimpleImputer(
-      #                  strategy="median"
-      #               )
-      #         ),
-      #         (
-      #               "scaler",
-      #               StandardScaler()
-      #         )
-      #      ]
-      #   )
-
-      #   #configure categorical transformer
-      #   objCategoricalTransformer = Pipeline(
-      #      steps=[
-      #         (
-      #               "imputer",
-      #               SimpleImputer(
-      #                  strategy="most_frequent"
-      #               )
-      #         ),
-
-      #         (
-      #               "onehot",
-      #               OneHotEncoder(
-      #                  handle_unknown="ignore"
-      #               )
-      #         )
-      #      ]
-      #   )
-
-      #    #configure column transformer
-      #   objPreProcessor = ColumnTransformer(
-      #      transformers=[
-      #          (
-      #                "numeric",
-      #                objNumericTransformer,
-      #                lstNumericFeatures
-      #          ),
-
-      #          (
-      #                "categorical",
-      #                objCategoricalTransformer,
-      #                lstCategoricalFeatures
-      #          )
-      #       ]
-      #   )
-
-         #create linear regression model
- #       objModel = LinearRegression()
-
-        #configure pipeline
-      #   objPipeline = Pipeline(
-      #       steps=[
-      #          (
-      #                "preprocessor",
-      #                objPreProcessor
-      #          ),
-      #          (
-      #                "model",
-      #                objModel
-      #          )
-      #       ]
-      #   )
-
-
-        #train model
-      #   objPipeline.fit(dfXTrain, dfyTrain)
-
-      #   #save pipeline to main folder
-      #   joblib.dump(
-      #      objPipeline,
-      #      CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_PATH
-      #   )
-
-      #   #save to sreamlit folder
-      #   joblib.dump(
-      #      objPipeline,
-      #      CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH
-      #   )
 
         dfXForecast = dfForecast[lstFeatures]
         dfForecast["Predicted_Sales"] = (
@@ -1710,7 +1672,7 @@ match radRadioButtons:
         dfPlot = dfPlot.sort_values("Date")
 
         #create plot
-        fig, ax = plt.subplots(figsize=(15, 7))
+        fig, ax = plt.subplots(figsize=(18, 7))
         # Set background colours
         fig.set_facecolor("#070707")
         ax.set_facecolor("#070707") 
@@ -1753,7 +1715,10 @@ match radRadioButtons:
 
         expExpander3 = conContainerTab14_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander3")
         expExpander3.dataframe(dfPlot, use_container_width=True)
-  
+        conSectionFooter15 = conContainerTab14_Sub.container(border=False, width="stretch", key="conSectionFooter15", height=400)
+        conSectionFooter15.write("This a machine learning prediction, where using linear regression it attempts to predict sales for 2013")
+        conSectionFooter15.write("As we can see it has some of spikes and troughs as the main data but seems a little erratic, which suggest this might not be the best model for this application!")
+        
 
 
 #******tab 15*******
@@ -1935,159 +1900,6 @@ match radRadioButtons:
            lstFeatures
         ]
 
-       
- 
-         # lstNumericFeatures = [
-
-         #    "Size",
-
-         #    "Year",
-         #    "Month",
-         #    "Day",
-         #    "DayOfWeek",
-         #    "WeekOfYear",
-         #    "Quarter",
-
-         #    "MonthSin",
-         #    "MonthCos",
-         #    "WeekSin",
-         #    "WeekCos",
-
-         #    "IsHoliday",
-
-         #    "Temperature",
-         #    "Unemployment",
-
-         #    "MarkDown1",
-         #    "MarkDown2",
-         #    "MarkDown3",
-         #    "MarkDown4",
-         #    "MarkDown5"
-         # ]
-
-
-         # lstCategoricalFeatures = [
-         #    "Store",
-         #    "Dept",
-         #    "Store_Type"
-         # ]
-
-
-         # objNumericTransformer = Pipeline(
-         #    steps=[
-         #       (
-         #             "imputer",
-         #             SimpleImputer(
-         #                strategy="median"
-         #             )
-         #       )
-         #    ]
-         # )
-
-
-         # objCategoricalTransformer = Pipeline(
-         #    steps=[
-         #       (
-         #             "imputer",
-         #             SimpleImputer(
-         #                strategy="most_frequent"
-         #             )
-         #       ),
-         #       (
-         #             "onehot",
-         #             OneHotEncoder(
-         #                handle_unknown="ignore"
-         #             )
-         #       )
-         #    ]
-         # )
-
-
-         # objPreProcessor = ColumnTransformer(
-         #    transformers=[
-
-         #       (
-         #             "numeric",
-         #             objNumericTransformer,
-         #             lstNumericFeatures
-         #       ),
-
-         #       (
-         #             "categorical",
-         #             objCategoricalTransformer,
-         #             lstCategoricalFeatures
-         #       )
-         #    ]
-         # )
-
-        #load pipeline
-      #   objModel = RandomForestRegressor(
-      #       n_estimators=20,  #50
-      #       max_depth=20,
-      #       min_samples_split=5,
-      #       min_samples_leaf=2,
-      #       random_state=42,
-      #       n_jobs=-1
-      #    )
-
-
-         # objPipeline = Pipeline(
-         #    steps=[
-
-         #       (
-         #             "preprocessor",
-         #             objPreProcessor
-         #       ),
-
-         #       (
-         #             "model",
-         #             objModel
-         #       )
-         #    ]
-         # )
-
-
-         # # ============================================================
-         # # TRAIN
-         # # ============================================================
-
-         # print(
-         #    "\nTraining Random Forest..."
-         # )
-
-         # objPipeline.fit(
-         #    dfXtrain,
-         #    dfyTrain
-         # )
-
-         # print(
-         #    "Training complete."
-         # )
-
-
-         # ============================================================
-         # SAVE PIPELINE
-         # ============================================================
-
-         # #save
-         # joblib.dump(
-         #    objPipeline,
-         #    CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_PATH
-         # )
-
-         # #save to streamlit folder
-         # joblib.dump(
-         #    objPipeline,
-         #    CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH
-         # )
-
-         # print(
-         #    "\nPipeline saved:"
-         # )
-
-         # print(CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_PATH)
-         # print(CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH)
-
         objPipeline = joblib.load(CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH)
         #predict sales for 2013
         dfForecast["Predicted_Sales"] = (
@@ -2149,7 +1961,7 @@ match radRadioButtons:
         dfPlot = dfPlot.sort_values("Date")
 
         #create plot
-        fig, ax = plt.subplots(figsize=(15, 7))
+        fig, ax = plt.subplots(figsize=(18, 7))
         # Set background colours
         fig.set_facecolor("#070707")
         ax.set_facecolor("#070707") 
@@ -2196,3 +2008,7 @@ match radRadioButtons:
 
         expExpander4 = conContainerTab15_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander4")
         expExpander4.dataframe(dfPlot, use_container_width=True)
+        conSectionFooter16 = conContainerTab15_Sub.container(border=False, width="stretch", key="conSectionFooter16", height=400)
+        conSectionFooter16.write("This a machine learning prediction, where using random forest it attempts to predict sales for 2013")
+        conSectionFooter16.write("As we can see unlike the linear regression model this one better fits the existing data patterns.")
+        conSectionFooter16.write("This is the model I present as the prediction for 2013 sales")

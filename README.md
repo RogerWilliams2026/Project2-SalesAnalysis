@@ -1,8 +1,8 @@
 # Project 2 - Sales Analysis
 
-Project s a data analysis project that sales data to answer business questions and validate hypotheses. The project involves data cleaning, transformation, and visualisation using Python and various libraries.
+Project is a data analysis project that sales data to answer business questions and validate hypotheses. The project involves data cleaning, transformation, and visualisation using Python and various libraries.
 
-Uses Project 1 and enchances upon it with advanced EDA and machine learning
+Uses Project 1 and enhances upon it with advanced EDA and machine learning new hypothesis are clearly noted
 
 # ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
@@ -20,27 +20,30 @@ These shall be renamed so they follow a naming convention, then cleaned and tran
 
 **Project Folder Structure:**
 
-- assets <- No files stored here is container folder for project notebooks etc
-
 Subfolders:  
-- css <- Contains file: style.css for streamlit
+assets:
 - csv <- Contains csv files during processing from raw to visualisation
-  Subfolders:
-  - CleanedFiles <- Contains cleaned data as csv files
-  - ExtractedFiles <- Contains files extracted from ZIP files
-  - OriginalFiles <- Contains the original data csv files
-  - VisualisationFiles <- Contains a combined csv file for visualisation
-- documents <- Contains files: 
-  - What_AI_Used_For.md (terrible grammar)  
-  - Project 2 Sales Analysis Dashboard Design.pdf 
-- jupyter_notebooks <- Contains the Jupyter Notebooks used for ETL and Visualisation  
-- Report <- Contains the report for the project
-- Report/Images <- Contains images used in the report and all plot images
-- streamlit <- contains files needed for Heroku to show streamlit dashboard
+    Data: 
+    - CleanedFiles <- Contains cleaned data as csv files
+    - ExtractedFiles <- Contains files extracted from ZIP files
+    - OriginalFiles <- Contains the original data csv files
+    - VisualisationFiles <- Contains a combined csv file for visualisation
+    Pipelines - machine learning pipelines
+documents <- Contains files: 
+    - What_AI_Used_For.md (terrible grammar)  
+    - Project 2 Sales Analysis Dashboard Design.pdf 
+jupyter_notebooks <- Contains the Jupyter Notebooks used for ETL and Visualisation  
+pipelines - machine learning pipelines 
+reports<- Contains the report for the project
+    - Report/Images <- Contains images used in the report and all plot images
+streamlit <- contains files needed for Heroku to show streamlit dashboard
+    assets: 
+      - css <- Contains file: style.css for streamlit
+      - Pipelines - machine learning pipelines
 
 **Jupyter_Notebooks:**
 
-There are separate notebooks for ETL on each csv file. THis was done so I can make sure each csv file is processed correctly which is easier to debug in one small notebook than a huge notebook with all the csv files in.
+There are separate notebooks for ETL on each csv file. This was done so I can make sure each csv file is processed correctly which is easier to debug in one small notebook than a huge notebook with all the csv files in.
 
 **Notebook Files:**
 
@@ -64,6 +67,8 @@ There are separate notebooks for ETL on each csv file. THis was done so I can ma
 What_AI_Used_For.md:
 
 Describes in detail how I used AI to help with issues with the project.
+
+
 
 ### Using The Notebooks
 
@@ -110,14 +115,20 @@ The business hopes this information will help it plan its store growth and marke
 **New Hypothesis:**
 
 - What are the most profitable departments per store in the last 12 months?
+  Validation: Test with suitable plot comparing store departments to show correlation
 - What are the top 10 stores in terms of profitability in the last 12 months?
+  Validation: Test with suitable plot filtered by top 10 records sorted in sales value descending
 - What are the bottom 10 stores in terms of profitability in the last 12 months
+  Validation: Test with suitable plot filtered by top 10 records sorted in sales value ascending
 - What percentage of customers were unemployed per store by month for last year?
+  Validation: Test with suitable plot filtered by top 10 records sorted in sales value 
 - What percentage of customer were unemployed by store size last year?  
+  Validation: Test with plot which can be viewed interactively to make data easier to grasp
 
 Machine Learning Predictions:
 - What are the predicted sales for stores by month for next year?
-- What are the predicted sales for stores in areas of high unemployment by month for next year?
+  Validation: Test with linear regression and random forest to determine best model for hypothesis
+
 
 ## Project Plan
 

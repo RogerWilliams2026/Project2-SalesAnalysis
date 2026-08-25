@@ -17,7 +17,11 @@ CNST_STR_DATA_WORKINGPATH = CNST_STR_DATA_ROOTPATH +"/WorkingFiles"
 CNST_STR_DATA_CLEANEDPATH = CNST_STR_DATA_ROOTPATH +"/CleanedFiles"
 CNST_STR_DATA_VISUALISATIONPATH = CNST_STR_DATA_ROOTPATH +"/VisualisationFiles"
 CNST_STR_PIPELINESPATH = "assets/pipelines"
-CNST_STR_REPORTIMAGESPATH = "reports/images"
+
+#need these two modified paths as ML for some reason does not like the /assets prefix
+CNST_STR_MLPIPELINESPATH = "assets/pipelines"
+CNST_STR_MLREPORTIMAGESPATH = "reports/images"
+
 
 #file name appenders
 CNST_STR_FILENAME_APPEND_CLEANED = "_Cleaned"

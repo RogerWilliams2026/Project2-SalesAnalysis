@@ -57,7 +57,7 @@ import modGlobal
 #
 # Data 
 #     \ExtractedFiles - extracted files from ZIP file
-#     \OriginalFiles - original ZIP file
+#     \OriginalFiles - original ZIP file/ csv files
 #     \CleanedFiles - ETL cleansed and prepared files copied into WorkingFiles
 #     \WorkingFiles - csv files ready for use in analysis
 #     \VisualisationFiles - user created files to visualisations
@@ -69,7 +69,7 @@ import modGlobal
 # funcCreateDirectories - creates the folder structure for the ETL library to use:
 #                         Data 
 #                             \ExtractedFiles - extracted files from ZIP file
-#                             \OriginalFiles - original ZIP file
+#                             \OriginalFiles - original ZIP file/ csv files 
 #                             \WorkingFiles
 #                             \VisualisationFiles
 #
@@ -213,8 +213,8 @@ def funcCreateDirectories():
         os.mkdir(os.getcwd() + modGlobal.CNST_STR_DATA_CLEANEDPATH)
 
     #create pipelines folder
-    if not os.path.exists(os.getcwd() + modGlobal.CNST_STR_PIPELINES_PATH):
-        os.mkdir(os.getcwd() + modGlobal.CNST_STR_PIPELINES_PATH)
+    if not os.path.exists(os.getcwd() + modGlobal.CNST_STR_PIPELINESPATH ):
+        os.mkdir(os.getcwd() + modGlobal.CNST_STR_PIPELINESPATH)
 
     print("Folder Structure Created Successfully!")
     
@@ -535,6 +535,39 @@ def funcReadExtractedFileReturnDataFrame(strFileName : str):
        return dfTemp    
 
 
+  
+def funcSaveFilesToOriginalFiles(lstFiles : list):
+    """
+    Created 25/08/2026 By Roger Williams
+
+    saves the file(s) passed in a list as to the original files folder
+
+
+    VARS
+
+    lstFiles      - list of files to copy
+
+
+    """
+    strFileName = ""
+
+    if lstFiles is None:
+        print("No Files To Save To Original Files Folder")
+        return
+
+    #copy each file to original files folder
+    for strKey in lstFiles:
+        strFileName = os.path.basename(strKey)
+        #delete if already exists
+        if os.path.exists(os.getcwd() + modGlobal.CNST_STR_DATA_ORIGINALPATH + "/" + strFileName):
+            os.remove(os.getcwd() + modGlobal.CNST_STR_DATA_ORIGINALPATH + "/" + strFileName)
+        
+        shutil.copyfile(strKey, os.getcwd() + modGlobal.CNST_STR_DATA_ORIGINALPATH + "/" + strFileName)
+        print(f"Copied: {strFileName} To Original Files Folder")     
+
+
+    
+  
   
 def funcSaveDataFrameToWorkingFile(dfWhat : pd.DataFrame):
     """

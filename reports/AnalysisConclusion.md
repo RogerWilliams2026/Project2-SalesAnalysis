@@ -116,27 +116,27 @@ When we double click on a store number we can see detailed markdown information 
 
 Interactive insights are great when dealing (as we are) with a lot of data e,g. number of stores and their departments, and act as a great presentation tool for internal Q&A session regarding store performance and profitability.
 
-7
+**Question Seven Asked: What Are The Most Profitable Departments Per Store In The Last 12 Months?**
 
 ![no image](/reports/Images/Hypothesis7_plotly.png)
 
-8
+**Question Eight Asked: What Are The Top 10 Stores In Terms Of Profitability In The Last 12 Months?**
 
 ![no image](/reports/Images/Hypothesis8_matplotlib.png)
 
-9
+**Question Nine Asked: What Are The Bottom 10 Stores In Terms Of Profitability In The Last 12 Months?**
 
 ![no image](/reports/Images/Hypothesis9_matplotlib.png)
 
-10
+**Question Ten Asked: What Percentage of Customers Were Unemployed Per Store By Month For Last Year?**
 
 ![no image](/reports/Images/Hypothesis10_plotly.png)
 
-11
+**Question Eleven Asked: What Percentage of Customers Were Unemployed By Store Size Last Year?**
 
 ![no image](/reports/Images/Hypothesis11_plotly.png)
 
-12
+**Question Twelve Asked: What Are The Predicted Sales for Stores by Month for Next Year?**
 
 Test
 

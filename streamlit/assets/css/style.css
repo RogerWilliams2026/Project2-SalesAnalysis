@@ -47,13 +47,8 @@ header[data-testid="stHeader"] {
   margin-top: 0px;
 }
 
-/* [data-testid="stTab"] {
-  color: white;
-} */
-
 [data-testid="stSidebar"] {
   background-color: rgb(48, 45, 85);
-  color: white;
   top: 0px;
 }
 
@@ -61,6 +56,11 @@ header[data-testid="stHeader"] {
 [data-testid="stSidebar"] {
   min-width: 240px;
   max-width: 240px;
+}
+
+.st-key-radRadioButtons p {
+  color: rgb(0, 221, 255);
+  font-size: medium;
 }
 
 /*move title upwards set width*/
@@ -95,20 +95,6 @@ div[data-testid="stAlert"] > div {
   text-align: center;
 }
 
-/* [data-testid="stVerticalBlock"] {
-  border-color: aliceblue;
-  border-width: 2px;
-}
-
-/* individual tab */
-/* [data-testid="stTabs"] {
-  margin-top: 0px;
-  padding-top: 0px;
-  line-height: 0.5ch;
-  color: rgb(252, 248, 7);
-  font-size: large;
-} */
-
 /* tab list  */
 [data-testid="stTab"] {
   margin-top: 0px;
@@ -126,26 +112,6 @@ div[data-testid="stAlert"] > div {
   font-weight: 800;
   font-size: medium;
 }
-
-/* Expander header */
-/* [data-testid="stExpander"] summary {
-  font-weight: 600;
-  height: 80px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  margin-top: 0px;
-  margin-bottom: opx;
-}
-
-[data-testid="stExpander"] {
-  font-weight: 600;
-  height: 80px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  margin-top: 0px;
-  margin-bottom: opx;
-} */
-
 /* container - tab 1 */
 .st-key-conTab1 p {
   padding-top: 0px;

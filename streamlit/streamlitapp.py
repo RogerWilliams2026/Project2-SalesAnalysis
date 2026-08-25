@@ -39,7 +39,6 @@ conContainerMain = None
 conMainFooter1 = None
 conMainFooter2 = None
 
-
 conContainerTab2_Sub = None
 conContainerTab3_Sub = None
 conContainerTab4_Sub = None
@@ -120,6 +119,10 @@ tabTab13 = None
 tabTab14 = None
 tabTab15 = None
 
+#sliders for user interaction
+sldSliderFrom = None
+
+
 #DataFrames vars for csv files for ML
 dfSales = pd.DataFrame()
 dfFeatures = pd.DataFrame()
@@ -147,6 +150,7 @@ dfXTest = pd.DataFrame()
 lstStoreRanges  = list()
 lstMarkdownColumns = list()
 lstFeatures = list()
+lstTemp = list()
 
 intYear = 0
 intNum = 0
@@ -729,13 +733,16 @@ match radRadioButtons:
         #first filter by year 2012
         dfSales_Combined_DataSet_Work = dfSales_Combined_DataSet_Work[dfSales_Combined_DataSet_Work['Date'].dt.year == 2012]
 
+        #add slider so user can play with the report
+        sdlSliderFrom = conContainerTab8_Sub.slider("Select Amount of Stores", min_value=10, max_value=dfSales_Combined_DataSet_Work["Store"].nunique(), value=10, step=1, key="sdlSliderFrom2")
+
         #group by Store and get sum of Weekly_Sales
         dfSales_Combined_DataSet_Work = (
            dfSales_Combined_DataSet_Work
            .groupby("Store")["Weekly_Sales"]
            .sum()
            .sort_values(ascending=False)
-           .head(10)
+           .head(sdlSliderFrom)
            .reset_index()
         )
 
@@ -751,7 +758,7 @@ match radRadioButtons:
         )
 
         #sort dataset
-        dfSales_Combined_DataSet_Work.sort_values("Weekly_Sales", ascending=False).head(10).plot(
+        dfSales_Combined_DataSet_Work.sort_values("Weekly_Sales", ascending=False).head(sdlSliderFrom).plot(
            x="Store",
            y="Weekly_Sales",
            kind="barh",
@@ -759,7 +766,7 @@ match radRadioButtons:
         )
 
         #unique to matplotlib
-        ax.set_title("Top 10 Stores By Sales For Last 12 Months")
+        ax.set_title(f"Top {sdlSliderFrom} Stores By Sales For Last 12 Months")
         ax.set_xlabel("Total Sales (£)")
         ax.set_ylabel("Store")
         ax.set_facecolor("#1e1e1e")
@@ -777,13 +784,19 @@ match radRadioButtons:
         conContainerTab8_Sub.pyplot(fig, use_container_width=True) 
         expExpander12 = conContainerTab8_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander12")
         expExpander12.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)         
+     
+        #get top 3 stores to show in footer
+        lstTemp = dfSales_Combined_DataSet_Work.head(sdlSliderFrom)["Store"]
+
         conSectionFooter8 = conContainerTab8_Sub.container(border=False, width="stretch", key="conSectionFooter8", height=400)
-        conSectionFooter8.write("The plot shows the top 10 stores by total sales for the last 12 months")   
-        conSectionFooter8.write("We can see stores 4, 20 and 13 are the highest earners in this context ")  
+        conSectionFooter8.write(f"The plot shows the top {sdlSliderFrom} stores by total sales for the last 12 months")   
+        conSectionFooter8.write(f"We can see stores {lstTemp[0]}, {lstTemp[1]} and {lstTemp[2]} are the highest earners in this context ")  
         conSectionFooter8.write("This is simple plot can cause a number of analytical questins to be asked:")  
         conSectionFooter8.write("- What size are the stores?")  
         conSectionFooter8.write("- Does store size pay a factor in sales?")  
         conSectionFooter8.write("- What effect does the employent rate have on these stores?")  
+      
+
        
 
    case "Hypothesis 9 - 11":     
@@ -810,16 +823,19 @@ match radRadioButtons:
         #first filter by year 2012
         dfSales_Combined_DataSet_Work = dfSales_Combined_DataSet_Work[dfSales_Combined_DataSet_Work['Date'].dt.year == 2012]
  
+        #add slider so user can play with the report
+        sdlSliderFrom = conSection3Tab.slider("Select Amount of Stores", min_value=10, max_value=dfSales_Combined_DataSet_Work["Store"].nunique(), value=10, step=1, key="sdlSliderFrom2")
+
+ 
         #group by Store and get sum of Weekly_Sales
         dfSales_Combined_DataSet_Work = (
             dfSales_Combined_DataSet_Work
             .groupby("Store")["Weekly_Sales"]
             .sum()
             .sort_values(ascending=False)
-            .tail(10)
+            .tail(sdlSliderFrom)
             .reset_index()
-        )
- 
+        ) 
  
         #need to handle plot differntly as matplotlib does not work in streamlit like ploty express
         ax = dfSales_Combined_DataSet_Work.plot(
@@ -832,7 +848,7 @@ match radRadioButtons:
         )
  
         #sort dataset
-        dfSales_Combined_DataSet_Work.sort_values("Weekly_Sales", ascending=False).head(10).plot(
+        dfSales_Combined_DataSet_Work.sort_values("Weekly_Sales", ascending=False).head(sdlSliderFrom).plot(
            x="Store",
            y="Weekly_Sales",
            kind="barh",
@@ -840,7 +856,7 @@ match radRadioButtons:
         )
  
         #unique to matplotlib
-        ax.set_title("Bottom 10 Stores By Sales For Last 12 Months")
+        ax.set_title(f"Bottom {sdlSliderFrom} Stores By Sales For Last 12 Months")
         ax.set_xlabel("Total Sales (£)")
         ax.set_ylabel("Store")
         ax.set_facecolor("#1e1e1e")
@@ -857,10 +873,14 @@ match radRadioButtons:
          
         conSection3Tab.pyplot(fig, use_container_width=True) 
         expExpander13 = conSection3Tab.expander("Show Data Used For Plot", expanded=False, key="expExpander13")
-        expExpander13.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)         
+        expExpander13.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)      
+        
+        #get top 3 stores to show in footer
+        lstTemp = dfSales_Combined_DataSet_Work.head(sdlSliderFrom)["Store"]
+      
         conSectionFooter9 = conSection3Tab.container(border=False, width="stretch", key="conSectionFooter9", height=400) 
-        conSectionFooter9.write("The plot shows the bottom 10 stores by total sales for the last 12 months")   
-        conSectionFooter9.write("We can see stores 33 and 36 are the lowest earners in this context ")  
+        conSectionFooter9.write(f"The plot shows the bottom {sdlSliderFrom} stores by total sales for the last 12 months")   
+        conSectionFooter9.write(f"We can see stores {lstTemp[len(lstTemp)-1]}, {lstTemp[len(lstTemp)-2]} and {lstTemp[len(lstTemp)-3]} are the lowest earners in this context ")  
         conSectionFooter9.write("This is simple plot can cause a number of analytical questins to be asked:")  
         conSectionFooter9.write("- What size are the stores?")  
         conSectionFooter9.write("- Does store size pay a factor in sales?")  

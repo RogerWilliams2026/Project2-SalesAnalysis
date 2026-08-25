@@ -113,6 +113,7 @@ import modGlobal
 #
 # funcGetCategoricalValueDistribution - Displays the value distribution for each categorical column in the passed DataFrame
 #
+# funcSaveFilesToOriginalFiles - saves the file(s) passed in a list to the original files folder
 #
 #
 # Private functions:
@@ -122,6 +123,13 @@ import modGlobal
 #
 # Order of Precedence:
 #
+# funcCreateDirectories - creates the folder structure for the ETL library to use:
+#                         Data 
+#                             \ExtractedFiles - extracted files from ZIP file
+#                             \OriginalFiles - original ZIP file/ csv files 
+#                             \WorkingFiles
+#                             \VisualisationFiles
+#
 # if using a ZIP file:
 #    funcExtractZIPFile - Extracts ZIP file into Data folder and keeps original in OriginalFiles Folder
 #    funcReadExtractedFilesReturnDictionary - reads csv file(s) from ExtractedFiles and returns a dictionary of dataframes with the  KEY as the filename and the VALUE as the dataframe
@@ -129,6 +137,7 @@ import modGlobal
 #    funcReadFileReturnDataFrame - reads a specific csv file and returns a DataFrame of the data
 #
 # funcSaveDataFrameToWorkingFile - saves the passed cleaned DataFrame as csv in the working folder
+# funcSaveFilesToOriginalFiles - saves the file(s) passed in a list to the original files folder
 # funcReadWorkingFilesReturnDictionary - reads csv file(s) from WorkingFiles and returns a dictionary of fils found
 #
 # Statistics:
@@ -496,9 +505,7 @@ def funcReadFileReturnDataFrame(strFileName : str):
           #make backup copy of file
           shutil.copyfile(strFileName, os.getcwd() + modGlobal.CNST_STR_DATA_ORIGINALPATH + "/" + os.path.basename(strFileName))
           print(f"Copied: {strFileName} To {modGlobal.CNST_STR_DATA_ORIGINALPATH} Folder")   
-  
 
-       #return DataFrame
        return dfTemp    
 
 
@@ -1061,8 +1068,7 @@ def funcRemoveTimeFromDateString(dfWhat : pd.DataFrame, strColumnName : str):
     modified DataFrame
     
     """
-    strColumn = ""
-    strValue = ""   
+  
     strTemp = ""
     intIndex = 0
     objRow = None
@@ -1142,107 +1148,6 @@ def funcUpdateRelatedRecords(dfToProcess : pd.DataFrame, strRelatedColumn : str,
             #return changed dataframe
             return dfToProcess
     #Note: maybe the for loop is a crass solution but it was the best I could find....for now! 
-
-# #create copy of df work dataframe
-# dfWorkTemp = dfWork.copy()
-# #get corrected dataframe
-# dfWorkTemp = funcUpdateRelatedRecords(df, "Product Name", "Product Category") 
-# #show the results (fingers crossed!)
-# dfWorkTemp
-
-
-
-# def funcFindRelatedColumns(dfWhat : pd.DataFrame):
-#     """
-#     Created 17/07/2026 By Roger Williams
-    
-#     Finds related columns in passed DataFrame and returns a list of related columns 
-    
-#     Reason:
-    
-#     Some columns may a have related column data e.g. product name could have related data in another 
-#     column say product category, this function returns a dictionary of those columns with the KEY
-#     as the first column and the VALUE as the related column
-    
-#     How it works:
-    
-#     Loops through each column in the DataFrame using one column as an anchor and getting the other
-#     columns count of unique values for records with first column value. If number of unique records
-#     is ZERO adds to a nested list of related columns which contains:
-    
-#     column name acting as anchor, its current value, comumn being checked, its value  
-    
-#     In theory if the total number of list items for the anchor column = the total number of rows
-#     in the DataFrame then we have a related column!
-    
-    
-#     VARS
-    
-#     dfWhat - DataFrame to find related columns for
-#     strColumn - column to find related columns for
-
-
-#     RETURNS
-    
-#     list of related columns
-    
-#     """
-    
-#     #create dictionary to hold related columns
-#     dictRelatedColumns = {}
-#     dfTemp = pd.DataFrame()
-   
-#     intUnique = 0
-#     intNum = 0
-#     intColumn = 0
-    
-#     strCurrentColumn = ""
-#     strNextColumn = ""
-#     objCurrentColumnValue = None
-#     objNextColumnValue = None
-#     lstNested = []
-   
-   
-#     #go through each column in the DataFrame
-#     for strCurrentColumn, strValue in dfWhat.items():
-#         intNum = 0    
-        
-#         #iterate through rest of columns to compare current column with others
-#         for intColumn in range(intNum + 1, len(dfWhat.columns)):      
-#             #if not last column
-#             if intNum != len(dfWhat.columns) - 1:
-#                #get filtered DataFrame for current column value
-#                dfTemp = dfWhat [ dfWhat[strCurrentColumn] == strValue[0] ]
-#                #get next column name
-#                strNextColumn = dfWhat.columns[intNum +1]
-#                #get next columns value
-#                objNextColumnValue = dfWhat[strNextColumn]
-#                #get number of unique values in the next column
-#                intUnique = dfWhat[strNextColumn].nunique()
-            
-#                #if ZERO we have a potential related column!
-#                if intUnique == 0:
-#                   #created nested list of:
-#                   #current column and value
-#                   #next column and value
-#                   #
-#                   #if total nuber of values = nummber of DataFrame rows we have a winner!
-#                   #
-#                   lstNested.append( [ strCurrentColumn, strValue[0], strNextColumn, objNextColumnValue[0] ] )   
-#             #increment counter for next column tp check              
-#             intNum +1
-        
-#         intColumn +1    
-        
-           
-#     #now check if nested list size = DataFrame rows!       
-#     lstNested
-    
-            
-#     #return list of related columns
-#     return dictRelatedColumns    
-
-
 
 
 

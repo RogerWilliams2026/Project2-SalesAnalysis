@@ -1,7 +1,3 @@
-
-from ast import Interactive
-
-from pygments.unistring import No
 import streamlit as st
 import pandas as pd
 import seaborn as sns
@@ -9,27 +5,9 @@ import plotly.express as px
 import pathlib
 import scipy.stats as stats
 import matplotlib.pyplot as plt
-
-#use custom module
-# import modGlobal
-# import modETL_Library as modETL
 import nbformat
 from matplotlib.ticker import MultipleLocator
-
-#for experiment ML
-# from sklearn.linear_model import LogisticRegression
-# from sklearn.linear_model import LinearRegression
-# from sklearn.tree import DecisionTreeClassifier
-# from sklearn.metrics import (
-#     accuracy_score, confusion_matrix, ConfusionMatrixDisplay,
-#     precision_score, recall_score, f1_score,
-#     roc_auc_score, roc_curve, classification_report,
-# )
-# from sklearn.metrics import mean_absolute_error, mean_squared_error
-# from sklearn.model_selection import train_test_split
-# import statsmodels.formula.api as smf
 import numpy as np
-
 import joblib
 #
 #  Created 28/07/2026 By Roger Williams
@@ -54,25 +32,14 @@ CNST_STR_FEATURES_DATASET = "assets/csv/Data/Features_DataSet_Visualisation.csv"
 CNST_STR_SALES_DATASET = "assets/csv/Data/Sales_DataSet_Visualisation.csv"
 CNST_STR_STORES_DATASET = "assets/csv/Data/Stores_DataSet_Visualisation.csv"
 
-
+#sidebar radio button control
 radRadioButtons = None
-
+#containers 
 conContainerMain = None
-conContainerTab1 = None
-conContainerTab2 = None
-conContainerTab3 = None
-conContainerTab4 = None
-conContainerTab5 = None
-conContainerTab6 = None
-conContainerTab7 = None
-conContainerTab8 = None
-conContainerTab9 = None
-conContainerTab10 = None
-conContainerTab11 = None
-conContainerTab12 = None
-conContainerTab13 = None
+conMainFooter1 = None
+conMainFooter2 = None
 
-conContainerTab1_Sub = None
+
 conContainerTab2_Sub = None
 conContainerTab3_Sub = None
 conContainerTab4_Sub = None
@@ -90,24 +57,16 @@ conSection1 = None
 conSection2 = None
 conSection3 = None
 conSection4 = None
-conSection5 = None
-conSection6 = None
 
 conSection1Title = None
 conSection2Title = None
 conSection3Title = None
 conSection4Title = None
-conSection5Title = None
-conSection6Title = None
 
 conSection1Tab = None
 conSection2Tab = None
 conSection3Tab = None
 conSection4Tab = None
-conSection5Tab = None
-conSection6Tab = None
-conSection7Tab = None
-conSection8Tab = None
 
 conSectionFooter1 = None
 conSectionFooter2 = None
@@ -123,10 +82,10 @@ conSectionFooter11 = None
 conSectionFooter12 = None
 conSectionFooter13 = None
 conSectionFooter14 = None
-
-
+conSectionFooter15 = None
+conSectionFooter16 = None
+#tab 1
 conOverview = None
-
 
 expExpander1 = None
 expExpander2 = None
@@ -143,48 +102,6 @@ expExpander12 = None
 expExpander13 = None
 expExpander14 = None
 expExpander15 = None
-expExpander16 = None
-expExpander17 = None
-expExpander18 = None
-expExpander19 = None
-expExpander20 = None
-
-
-col1Tab1 = None
-col2Tab1 = None
-col3Tab1 = None
-col4Tab1 = None
-
-col1Tab2 = None
-col2Tab2 = None
-col3Tab2 = None
-col4Tab2 = None
-
-col1Tab3 = None
-col2Tab3 = None
-col3Tab3 = None
-col4Tab3 = None
-col5Tab3 = None
-col6Tab3 = None
-col7Tab3 = None
-col8Tab3 = None
-col9Tab3 = None
-col10Tab3 = None
-
-col1Tab4 = None
-col2Tab4 = None
-col3Tab4 = None
-col4Tab4 = None
-
-col1Tab5 = None
-col2Tab5 = None
-col3Tab5 = None
-col4Tab5 = None
-col5Tab5 = None
-col6Tab5 = None
-col7Tab5 = None
-col8Tab5 = None
-
 
 tabTab1 = None
 tabTab2 = None
@@ -202,23 +119,15 @@ tabTab12 = None
 tabTab13 = None
 tabTab14 = None
 tabTab15 = None
-tabTab16 = None
 
-tabHypothesis = None
-
-txtText = None
-figPlot = None
-
-dictDataFrames = dict()
-dictWhat = dict()
-dictTransform = dict()
-
+#DataFrames vars for csv files for ML
 dfSales = pd.DataFrame()
 dfFeatures = pd.DataFrame()
 dfStores = pd.DataFrame()
+
+#DataFrames vars
 dfSales_Combined_DataSet = pd.DataFrame()
 dfSales_Combined_DataSet_Work = pd.DataFrame()
-dteStartDate = pd.DataFrame()
 dfSales_Combined_DataSet_StoreType = pd.DataFrame()
 dfSales_Combined_DataSet_SubSet = pd.DataFrame()
 dfSales_Combined_DataSet_Final = pd.DataFrame()
@@ -234,17 +143,12 @@ dfPredictedSales = pd.DataFrame()
 dfPlot = pd.DataFrame()
 dfXTest = pd.DataFrame()
 
-
-
+#other vars
 lstStoreRanges  = list()
 lstMarkdownColumns = list()
 lstFeatures = list()
 
-fltSkew = 0.0
-fltKurtosis = 0.0
 intYear = 0
-intStartYear = 0
-intEndYear = 0
 intNum = 0
 dteStartDate = None
 objPipeline = None
@@ -289,22 +193,25 @@ st.session_state.sidebar_state = 'expanded'
  
 # if: @st.cache_data  - put before function means if run any results are reused i.e. on loading data
 
-#key does NOT create a HTML id just a link to the current page session for reading current values e.g.
-#st.session_state.<key name>
-#useful if using mutiple widgets of the same type
-
-
 st.title("Sales Analysis")
 st.subheader("What We See In The Data")
 
-#create page controls container
-conContainerMain = st.container(border=True, width="stretch", key="conMain", height=900 ) #height=780
+#create page controls container why will it not stretch to fill the page???
+conContainerMain = st.container(border=True, width="stretch", key="conMain", height="stretch" ) #height=780
+
+#create footer container
+conMainFooter1 = st.container(border=True, width="stretch", key="conMainFooter1", height=40 )
+conMainFooter1.write("Created by Roger Williams - 2026")
+conMainFooter2 = st.container(border=True, width="stretch", key="conMainFooter2", height=50 )
+conMainFooter2.write("Each Page With A Plot Has A Data Table and Description - Use Scroll Bar On Right (Or Mouse Wheel)" +
+                     "To Move Down and See All Contents If Only Plot Visible")
 
 #create sidebar
 st.sidebar.title("Analysis Options",width="content",anchor="left")
 
 #add radio button group for options
-radRadioButtons = st.sidebar.radio("Select:", ["Overview", "Hypothesis 1 -4", "Hypothesis 5 - 8", "Hypothesis 9 - 11", "ML Test"], index=0, key="radRadioButtons")
+radRadioButtons = st.sidebar.radio("Select:", ["Overview", "Hypothesis 1 -4", "Hypothesis 5 - 8", "Hypothesis 9 - 11", "ML Test"], 
+                                   index=0, key="radRadioButtons")
 
 #populate container with page controls
 match radRadioButtons:
@@ -340,14 +247,14 @@ match radRadioButtons:
         #plotly visualisation for hypothesis 1 - are sales increased if weather is hotter or colder in the last 12 months? 
         #Note: in order for the "ticks" to show on the axes Plotly needs to be version 5.8 or higher
         conSection1 = conContainerMain.container(border=False, width="stretch", key="conSection1", height=860)
-        conSection1Title = conSection1.container(border=False, width="stretch", key="conSection1Title", height=40)
-         
+
         #create tab control which houses containers for the tab data (split into columns!)        
         tabTab1, tabTab2, tabTab3, tabTab4 = conSection1.tabs([
           "Hypothesis 1", "Hypothesis 2", "Hypothesis 3", "Hypothesis 4"
-        ])
-     
+        ])   
+   
         conSection1Tab = tabTab1.container(border=True, width="stretch", height=780)
+        conSection1Title = conSection1Tab.container(border=False, width="stretch", key="conSection1Title", height=40)
         conSection1Title.info("Are Sales Increased If Weather Is Hotter Or Colder In The Last 12 Months?")
 
         #load into DataFrame copy for working with   
@@ -386,7 +293,8 @@ match radRadioButtons:
         fig.update_layout(
            xaxis_title="Temperature (°C)",
            yaxis_title="Weekly Sales (£)", 
-           title_x = 0.3
+           title_x = 0.3, 
+           plot_bgcolor="#070707",
         )
              
         #remove after testing
@@ -401,7 +309,9 @@ match radRadioButtons:
    
         conSectionFooter1 = conSection1Tab.container(border=False, width="stretch", key="conSectionFooter1", height=400)
         conSectionFooter1.write("As we can see from the above visualisation, there is a correlation between sales and weather.")
-        conSectionFooter1.write("There is a clear variance at extreme parts of the temperature range and during the centre range of temperature approximately 42-58 Fahrenheit. So clearly temperature is an effective factor in sales, _but_ other factors could be at play such as the environmental conditions a particular store is in.")
+        conSectionFooter1.write("There is a clear variance at extreme parts of the temperature range and during the centre range of " + 
+                                "temperature approximately 42-58 Fahrenheit. So clearly temperature is an effective factor in sales, " + 
+                                "_but_ other factors could be at play such as the environmental conditions a particular store is in.")
         conSectionFooter1.write("Deeper analysis preferably by stores in a sales region would offer a better visualisation of the question. ")
          
  
@@ -434,8 +344,12 @@ match radRadioButtons:
         expExpander6.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)         
   
         conSectionFooter2 = conContainerTab2_Sub.container(border=False, width="stretch", key="conSectionFooter2", height=400)
-        conSectionFooter2.write("Due to the large amount of data I chose a boxplot style visualisation to show the distribution of sales by store type. Also it allows us to see the outliers in the data and the variance of sales by store, which gives us a quick visual depiction of how holiday weeks affects sales directly.")
-        conSectionFooter2.write("We can deduce that holiday weeks have a positive effect on sales, and that the variance of sales is greater during holiday weeks than non holiday weeks. Clearly store size also pays a relationship between holiday and non holiday sales volumes, but we can see simply and clearly the effect a holiday week has on footfall and sales.")
+        conSectionFooter2.write("Due to the large amount of data I chose a boxplot style visualisation to show the distribution of sales" +
+                                "by store type. Also it allows us to see the outliers in the data and the variance of sales by store, which" +
+                                "gives us a quick visual depiction of how holiday weeks affects sales directly.")
+        conSectionFooter2.write("We can deduce that holiday weeks have a positive effect on sales, and that the variance of sales is greater" +
+                                "during holiday weeks than non holiday weeks. Clearly store size also pays a relationship between holiday and" +
+                                "non holiday sales volumes, but we can see simply and clearly the effect a holiday week has on footfall and sales.")
 
  #******tab 3*******  
         #plotly visualisation for hypothesis 3 - What is most profitable store type over the last 12 months?
@@ -475,15 +389,18 @@ match radRadioButtons:
         fig.update_yaxes(
            tickprefix="£",
            tickformat=","
-        )
+        )      
  
-        fig.update_layout(title_x = 0.3)        
+        fig.update_layout(title_x = 0.3, xaxis_color="white", yaxis_color="white", plot_bgcolor="#070707")        
         conContainerTab3_Sub.plotly_chart(fig, use_container_width=True, key="figTab3") 
         expExpander7 =  conContainerTab3_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander7")
         expExpander7.dataframe(dfSales_Combined_DataSet_StoreType, use_container_width=True)         
         conSectionFooter3 = conContainerTab3_Sub.container(border=False, width="stretch", key="conSectionFooter3", height=400)   
         conSectionFooter3.write("This simple yet direct visualisation show the direct difference between the store _types_ and sales.") 
-        conSectionFooter3.write("It is clear that the type 1 store is the most profitable store type in the last 12 months, and that the type 3 store is the least profitable store type in the last 12 months, but being a different type may by nature have a smaller customer based, but does not imply that it is not a profitable one in comparision to its market and customer base.")
+        conSectionFooter3.write("It is clear that the type 1 store is the most profitable store type in the last 12 months, and that the" +
+                                "type 3 store is the least profitable store type in the last 12 months, but being a different type may by " +
+                                "nature have a smaller customer based, but does not imply that it is not a profitable one in comparision to" +
+                                "its market and customer base.")
 
    
  #******tab 4*******    
@@ -528,7 +445,15 @@ match radRadioButtons:
            ]
 
            fig, ax = plt.subplots(figsize=(20, 6))
-         
+           #set colours
+           fig.set_facecolor("#070707")
+           ax.set_facecolor("#070707")  
+           ax.xaxis.label.set_color("white")
+           ax.yaxis.label.set_color("white")
+           ax.title.set_color("white")
+           ax.tick_params(axis='x', colors='white')
+           ax.tick_params(axis='y', colors='white')
+                    
            #set subplots defaults
            sns.barplot(data=dfSales_Combined_DataSet_SubSet, x="Store_Size", y="Weekly_Sales",
                         hue="Store_Size")
@@ -548,17 +473,20 @@ match radRadioButtons:
            intNum += 1
        
         conSectionFooter4 = conContainerTab4_Sub.container(border=False, width="stretch", key="conSectionFooter4", height=400)
-        conSectionFooter4.write("An interesting visualisation that shows the correlation between store size and sales. It is clear that there is a positive correlation between store size and sales, ")
-        conSectionFooter4.write("but it is not a linear correlation, as we can see from the plot, and remember a smaller stores is not necessarily a less profitable store, as it may have a ")
-        conSectionFooter4.write("smaller customer base, but is still profitable in its own right _but_ suggest additional analysis regarding store _type_ in correlation to size and sales would be a logical next step.")
-        conSectionFooter4.write("In stores: 9, 19, 26, 37 all have high sales but store 26 is the highest. Further analysis of theses stores by _type_ could yield some fascinating insights.")  
+        conSectionFooter4.write("An interesting visualisation that shows the correlation between store size and sales. It is clear that there" +
+                                "is a positive correlation between store size and sales, ")
+        conSectionFooter4.write("but it is not a linear correlation, as we can see from the plot, and remember a smaller stores is not necessarily" +
+                                "a less profitable store, as it may have a ")
+        conSectionFooter4.write("smaller customer base, but is still profitable in its own right _but_ suggest additional analysis regarding " +
+                                "store _type_ in correlation to size and sales would be a logical next step.")
+        conSectionFooter4.write("In stores: 9, 19, 26, 37 all have high sales but store 26 is the highest. Further analysis of theses stores by" +
+                                "_type_ could yield some fascinating insights.")  
 
          
    case "Hypothesis 5 - 8":                
   #******tab 5*******    
         #plotly visualisation for hypothesis 5 - Weekly Sales by Store Type, Store and Department For Last 12 Months
         conSection2 = conContainerMain.container(border=False, width="stretch", key="conSection2", height=860)
-        conSection2Title = conSection2.container(border=False, width="stretch", key="conSection2Title", height=40)
          
         #create tab control which houses containers for the tab data (split into columns!)        
         tabTab5, tabTab6, tabTab7, tabTab8 = conSection2.tabs([
@@ -566,9 +494,9 @@ match radRadioButtons:
         ])
      
         conSection2Tab = tabTab5.container(border=True, width="stretch", height=780)
+        conSection2Title = conSection2Tab.container(border=False, width="stretch", key="conSection2Title", height=40)
         conSection2Title.info("Weekly Sales by Store Type, Store and Department For Last 12 Months")
-
-
+ 
         #chatGPT generated code used as a base and heavily modified to suit my needs
         #added code comments
         #load into DataFrame copy for working with   
@@ -615,18 +543,24 @@ match radRadioButtons:
         fig.update_layout(
            width=800,
            height=600,
-           title_x = 0.3
+           title_x = 0.3,
+           plot_bgcolor="#070707"
         )
  
         conSection2Tab.plotly_chart(fig, use_container_width=True, key="figTab5") 
-        expExpander13 =  conSection2Tab.expander("Show Data Used For Plot", expanded=False, key="expExpander13")
-        expExpander13.dataframe(dfSunburst_DataSet, use_container_width=True)         
+        expExpander9 =  conSection2Tab.expander("Show Data Used For Plot", expanded=False, key="expExpander9")
+        expExpander9.dataframe(dfSunburst_DataSet, use_container_width=True)         
         conSectionFooter5 = conSection2Tab.container(border=False, width="stretch", key="conSectionFooter5", height=400)
-        conSectionFooter5.write("As you are aware this is more than a visualisation it is an interactive tools, whereby you can \"drill down\" into the details and experience the data in a more dynamic way.")
-        conSectionFooter5.write("As we can see the visualisation is presented as a circular dial with the outer ring representing the weekly sales, next ring inwards is the store number then finally the centre ring is the store type.")
+        conSectionFooter5.write("As you are aware this is more than a visualisation it is an interactive tools, whereby you can" +
+                                "\"drill down\" into the details and experience the data in a more dynamic way.")
+        conSectionFooter5.write("As we can see the visualisation is presented as a circular dial with the outer ring representing the" +
+                                "weekly sales, next ring inwards is the store number then finally the centre ring is the store type.")
         conSectionFooter5.write("Hovering the mouse over any section exposes brief details")          
-        conSectionFooter5.write("Now we can see each departments sales performance within that store, and as we can see when we hover the mouse over a department the information for that exact department.")
-        conSectionFooter5.write("Also take note in the previous image the centre ring clearly shows that store type 1 has the most profitable stores, and that store type 3 has the least profitable stores, but as we have seen previously this does not mean that they are not profitable in their own right. ") 
+        conSectionFooter5.write("Now we can see each departments sales performance within that store, and as we can see when we hover the mouse" +
+                                "over a department the information for that exact department.")
+        conSectionFooter5.write("Also take note in the previous image the centre ring clearly shows that store type 1 has the most profitable" +
+                                "stores, and that store type 3 has the least profitable stores, but as we have seen previously this does not" +
+                                "mean that they are not profitable in their own right. ") 
  
  #******tab 6*******  
         #plotly visualisation for hypothesis 6 - Impact of markdowns on sales during holiday periods in the last 12 months by store
@@ -692,18 +626,22 @@ match radRadioButtons:
         #set plot size
         fig.update_layout(
            width=800,
-           height=600
+           height=600,
+           plot_bgcolor="#070707"
         )
  
         conContainerTab6_Sub.plotly_chart(fig, use_container_width=True, key="figTab6") 
-        expExpander14 = conContainerTab6_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander14")
-        expExpander14.dataframe(dfSales_Combined_DataSet_Final, use_container_width=True)         
+        expExpander10 = conContainerTab6_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander10")
+        expExpander10.dataframe(dfSales_Combined_DataSet_Final, use_container_width=True)         
         conSectionFooter6 = conContainerTab6_Sub.container(border=False, width="stretch", key="conSectionFooter6", height=400)
         conSectionFooter6.write("This is a nice detailed yet not too complex visualisation that just as you have discovered is the same methodology")
         conSectionFooter6.write("as the previous visualisation in that it is interactive, so we can \"drill down\" into finer detail.")
-        conSectionFooter6.write("As we can see when we hover the mouse over a markdown section we can see the store number, the markdown amount and the sales for that store during the holiday period.")
+        conSectionFooter6.write("As we can see when we hover the mouse over a markdown section we can see the store number, the markdown amount" +
+                                "and the sales for that store during the holiday period.")
         conSectionFooter6.write("When we double click on a store number we can see detailed markdown information for the store:")
-        conSectionFooter6.write("Interactive insights are great when dealing (as we are) with a lot of data e,g. number of stores and their departments, and act as a great presentation tool for internal Q&A session regarding store performance and profitability.")   
+        conSectionFooter6.write("Interactive insights are great when dealing (as we are) with a lot of data e,g. number of stores and their" +
+                                "departments, and act as a great presentation tool for internal Q&A session regarding store performance and" +
+                                "profitability.")   
      
  
  #******tab 7*******  
@@ -765,11 +703,12 @@ match radRadioButtons:
            coloraxis_colorbar=dict(title="Total Sales (£)"),
            title_x=0.3,  # Center the title
            font=dict(size=12),  # Set font size for better readability
+           plot_bgcolor="#070707"
         )  
 
         conContainerTab7_Sub.plotly_chart(fig, use_container_width=True, key="figTab7") 
-        expExpander15 = conContainerTab7_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander15")
-        expExpander15.dataframe(dfSales_Combined_DataSet_HighestProfit, use_container_width=True)         
+        expExpander11 = conContainerTab7_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander11")
+        expExpander11.dataframe(dfSales_Combined_DataSet_HighestProfit, use_container_width=True)         
         conSectionFooter7 = conContainerTab7_Sub.container(border=False, width="stretch", key="conSectionFooter7", height=400)
         conSectionFooter7.write("The plot shows the departments with the highest total sales for store during last 12 months")
         conSectionFooter7.write("We can see that stores 13, 14 and 19 have the highest earning departments  ")
@@ -836,8 +775,8 @@ match radRadioButtons:
         plt.tight_layout()
         
         conContainerTab8_Sub.pyplot(fig, use_container_width=True) 
-        expExpander16 = conContainerTab8_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander16")
-        expExpander16.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)         
+        expExpander12 = conContainerTab8_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander12")
+        expExpander12.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)         
         conSectionFooter8 = conContainerTab8_Sub.container(border=False, width="stretch", key="conSectionFooter8", height=400)
         conSectionFooter8.write("The plot shows the top 10 stores by total sales for the last 12 months")   
         conSectionFooter8.write("We can see stores 4, 20 and 13 are the highest earners in this context ")  
@@ -854,7 +793,6 @@ match radRadioButtons:
         #plotly visualisation for hypothesis 9 - What are the bottom 10 stores in terms of profitability in the last 12 months?
         #Note: last year in data is: 2012
         conSection3 = conContainerMain.container(border=False, width="stretch", key="conSection3", height=860)
-        conSection3Title = conSection3.container(border=False, width="stretch", key="conSection3Title", height=40)
          
         #create tab control which houses containers for the tab data (split into columns!)        
         tabTab9, tabTab10, tabTab11 = conSection3.tabs([
@@ -862,8 +800,9 @@ match radRadioButtons:
         ])  
 
         conSection3Tab = tabTab9.container(border=True, width="stretch", height=780)
+        conSection3Title = conSection3Tab.container(border=False, width="stretch", key="conSection3Title", height=40)      
         conSection3Title.info("What Are The Bottom 10 Stores In Terms Of Profitability In The Last 12 Months?")
-
+  
  
         #make copy of DataFrame
         dfSales_Combined_DataSet_Work = dfSales_Combined_DataSet.copy()
@@ -917,11 +856,11 @@ match radRadioButtons:
         plt.tight_layout()     
          
         conSection3Tab.pyplot(fig, use_container_width=True) 
-        expExpander17 = conSection3Tab.expander("Show Data Used For Plot", expanded=False, key="expExpander17")
-        expExpander17.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)         
+        expExpander13 = conSection3Tab.expander("Show Data Used For Plot", expanded=False, key="expExpander13")
+        expExpander13.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)         
         conSectionFooter9 = conSection3Tab.container(border=False, width="stretch", key="conSectionFooter9", height=400) 
         conSectionFooter9.write("The plot shows the bottom 10 stores by total sales for the last 12 months")   
-        conSectionFooter9.write("We can see stores 33 adn 36 are the lowest earners in this context ")  
+        conSectionFooter9.write("We can see stores 33 and 36 are the lowest earners in this context ")  
         conSectionFooter9.write("This is simple plot can cause a number of analytical questins to be asked:")  
         conSectionFooter9.write("- What size are the stores?")  
         conSectionFooter9.write("- Does store size pay a factor in sales?")  
@@ -968,6 +907,7 @@ match radRadioButtons:
            yaxis_title="Unemployment Rate (%)",
            title_x=0.3,  # Centre the title
            font=dict(size=12), 
+           plot_bgcolor="#070707"
         )
 
         fig.update_xaxes(
@@ -982,11 +922,12 @@ match radRadioButtons:
          #show plot
         
         conContainerTab10_Sub.plotly_chart(fig, use_container_width=True) 
-        expExpander18 = conContainerTab10_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander18")
-        expExpander18.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)           
+        expExpander14 = conContainerTab10_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander14")
+        expExpander14.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)           
         conSectionFooter10 = conContainerTab10_Sub.container(border=False, width="stretch", key="conSectionFooter10", height=400)
         conSectionFooter10.write("Show an interesting trend that months 3, 6 and 8 (March, June and August) have a peak in unemployment rates")  
-        conSectionFooter10.write("This is an interesting insight as it shows that there is a correlation between the months and the unemployment rates, across ALL stores. ")
+        conSectionFooter10.write("This is an interesting insight as it shows that there is a correlation between the months and the unemployment" +
+                                 "rates, across ALL stores. ")
         
  
  #******tab 11*******  
@@ -1038,16 +979,18 @@ match radRadioButtons:
            #zoom in slightly to better fill the whitespace
            scene_camera=dict(
               eye=dict(x=1.4, y=1.4, z=1.4)  # closer / more zoomed in
-           )
+           ),
+           plot_bgcolor="#070707"
         )       
       
         #show plot       
         conContainerTab11_Sub.plotly_chart(fig, use_container_width=True) 
-        expExpander19 = conContainerTab11_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander19")
-        expExpander19.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)           
+        expExpander15 = conContainerTab11_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander15")
+        expExpander15.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)           
         conSectionFooter11 = conContainerTab11_Sub.container(border=False, width="stretch", key="conSectionFooter11", height=400)
         conSectionFooter11.write("Shows an interesting trend that store size is not a factor in the amount of unemployed customers per store")
-        conSectionFooter11.write("What makes this plot so cool, is you move it around and articulate the data points yourself exposing insights that words could miss")
+        conSectionFooter11.write("What makes this plot so cool, is you move it around and articulate the data points yourself exposing insights" + 
+                                 "that words could miss")
    
    case "ML Test":
    
@@ -1717,7 +1660,8 @@ match radRadioButtons:
         expExpander3.dataframe(dfPlot, use_container_width=True)
         conSectionFooter15 = conContainerTab14_Sub.container(border=False, width="stretch", key="conSectionFooter15", height=400)
         conSectionFooter15.write("This a machine learning prediction, where using linear regression it attempts to predict sales for 2013")
-        conSectionFooter15.write("As we can see it has some of spikes and troughs as the main data but seems a little erratic, which suggest this might not be the best model for this application!")
+        conSectionFooter15.write("As we can see it has some of spikes and troughs as the main data but seems a little erratic, which suggest" +
+                                 "this might not be the best model for this application!")
         
 
 

@@ -164,6 +164,25 @@ Chose sunburst plot to show the sales and indiviudal markdowns per store during 
 Again felt an interactive approach lends itself better to this type of analysis.
 
 
+_Hypothesis 7: What are the most profitable departments per store in the last 12 months?_
+  Validation: Test with suitable plot comparing store departments to show correlation
+
+_Hypothesis 8: What are the top 10 stores in terms of profitability in the last 12 months?_
+  Validation: Test with suitable plot filtered by top 10 records sorted in sales value descending
+
+_Hypothesis 9: What are the bottom 10 stores in terms of profitability in the last 12 months_
+  Validation: Test with suitable plot filtered by top 10 records sorted in sales value ascending
+
+_Hypothesis 10: What percentage of customers were unemployed per store by month for last year?_
+  Validation: Test with suitable plot filtered by top 10 records sorted in sales value 
+
+_Hypothesis 11: What percentage of customer were unemployed by store size last year?_  
+  Validation: Test with plot which can be viewed interactively to make data easier to grasp
+
+_Hypothesis 12: What are the predicted sales for stores by month for next year?_
+  Validation: Test with linear regression and random forest to determine best model for hypothesis
+
+
 
 ## Analysis techniques used
 
@@ -175,9 +194,21 @@ an applied naming convention:
 - Sales_DataSet_Cleaned.csv
 - Sales_Combined.csv
 
+For machine learning 4 pipelines are created:
+- forest_regression_hypothesis12_pipeline.pkl
+- forest_regression_hypothesis12_test_pipeline.pkl
+- linear_regression_hypothesis12_pipeline.pkl
+- linear_regression_hypothesis12_test_pipeline.pkl
+
+Files with _test_ in the name are used to run test "prediciton" by getting machine learning processes
+to "predict" values for an existing year. This is used to compare with the previous year via a plot
+
+The other files are used in machine learning to predict the next years values, again shown in a plot
+
+
 **Methods Used:**
 
-Generative AI tools were mostly used to solve code issues and occasionaly for plotting ideas due to my lack of exerience with visualisation libraries particularly the first sunburst plot as I was unsure if my approach was the correct one.
+Generative AI tools were mostly used to solve code issues and occasionally for plotting ideas due to my lack of experience with visualisation libraries particularly the first sunburst plot as I was unsure if my approach was the correct one.
 
 Data was a limiting factor, not in terms of detail but sheer volume and breadth. I was stumped with some hypothesis by the fact I was trying to analyse sales data with 45 stores each with 97 departments and was lacking experience to know what plots and strategies are best to use to visualise this type data.
 
@@ -188,45 +219,58 @@ Analysed plots compared to hypothesis, by checking expected values against queri
 
 For example the features data set.csv file has 7 months of date values not in sales data-set.csv, so that needed to be filtered before creating the combined csv file.
 
+What I did not realise until much later into the project is that while there are 40000+ records in the files, when it came to the machine learning there is barely enough data! Did manage to get it working reasonably well.
+
+
 ## Libraries Used
 
-import os
-import numpy
-import streamlit as st
-import pandas as pd
-import seaborn as sns
-import plotly.express as px
-import pathlib
-import scipy.stats as stats
-import matplotlib.pyplot as plt
-import nbformat
-from matplotlib.ticker import MultipleLocator
-import seaborn as sns
+The requirements.txt has the full list, but here is a list taken from the Jupyter notebooks:
 
-#added by me for visualisation fine tuning
-from matplotlib.ticker import MultipleLocator
+joblib
+matplotlib.pyplot
+matplotlib.ticker
+nbformat 
+numpy
+os
+pandas
+pathlib
+plotly.express
+scipy.stats
+seaborn
+sklearn.compose
+sklearn.ensemble
+sklearn.impute
+sklearn.linear_model
+sklearn.metrics
+sklearn.model_selection
+sklearn.pipeline
+sklearn.preprocessing
+sklearn.tree
+statsmodels.api
+statsmodels.formula.api
+sys
 
-#added by me for plotly.express visualisation issue
-import nbformat
-#for ML experiments
-from sklearn.linear_model import LogisticRegression
-from sklearn.linear_model import LinearRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import (
-accuracy_score, confusion_matrix, ConfusionMatrixDisplay,
-precision_score, recall_score, f1_score,
-roc_auc_score, roc_curve, classification_report,
-)
-from sklearn.metrics import mean_absolute_error, mean_squared_error
-from sklearn.model_selection import train_test_split
-import statsmodels.formula.api as smf
-import numpy as np
-import joblib
 
-#import user created modules
-#below solution provided by chatGPT
-from assets.python_files.modGlobal import modGlobal
-from assets.python_files.modETL_Library import modETL
+Also included my own libraries:
+
+modGlobal
+modETL_Library
+
+The streamlit application uses these:
+
+joblib
+matplotlib.pyplot
+matplotlib.ticker
+nbformat
+numpy
+pandas
+pathlib
+plotly.express
+scipy.stats
+seaborn
+streamlit
+
+
 
 ## Development Roadmap
 
@@ -259,14 +303,38 @@ from assets.python_files.modETL_Library import modETL
   Used pip install nbformat and added to dependencies in Notebook_Visualisations.ipynb to fix the issue
 - Decided to use an ETL library I had created but could not get python to import it so had to resort to chatGPT  
   to get the methodology to use it! 
+- Had a strange issue with streamlit not accepting / at the start of a path, then discovered the ML routines
+  for saving pipelines and plots did not either but python did!(??)
+- One major challenge was VS Code. When run with Jupyter notebooks **and** a virtual environment it quickly
+  became as stable as a jelly on a JCB! Frequent kernel locks where it would say it was starting the kernel
+  but never did, which meant having to close and re-open VS Code which usually meant the kernel would lock
+  again, so **another** restart was required, then it would not respond to run command so **another** restart was
+  required then it would run. Things quickly became exacerbated if *any* change was made to a module as
+  the Jupyter notebook would run *the old code* which meant - yep restart the kernel...
+  Usually I was restarting VS Code 12-20 times a development day. if virtual environments are not used it 
+  works fine!
+- Machine learning was made a lot harder by the fact that the data worth using for it was continuous data!
+  Particularly dates, which had not been covered in the course, so over to StackOverflow to get some basic
+  code structure, which I faffed and fettled into what it is now
 
 
 ## New Skills and Tools
 
 - Generative AI tools (Copilot and chatGPT) helped hugely with strange library issues and code snippets
   and the generation of the first sunburst plot
-- Learned about project management, and effective timeboxing for project sections e.g. documentation
+- Learned about project management, and effective timeboxing for project sections e.g. documentation as
+  well as the composite 
 - Discovered I preferred plotly as a visualisation tool due to its better appearence and options
+- Some nice EDA skills and better ways to "know the data" than merely .shape/.describe etc. such as: 
+  Q-Q plots and the great eye opener the Parametric tests
+- More plot skills, such as using sunbursts for drill-downs and finally found a use for my favourite plot
+  the 3D scatter! In the LMS examples it was largely cosmetic and difficult to read but I found a hypothesis
+  I had was the perfect fit, and it shows how can be more than a gimmick plot and actually show data in a
+  way that would take many, many words to achieve 
+- Also got confident it applying lots of differing EDA styles to analyse columns and potential correlations
+- Got quite handy with streamlit. Being familiar with HTML helped a lot for example I think of containers
+  as HTML DIVs, and KEY as HTML ID
+
 
 ## Who Won The Generative AI Battle?
 
@@ -274,30 +342,24 @@ chatGPT won hands down, I found Copilot in VS Code largely irritating and invasi
 
 Posted the code into chatGPT and over an hour it honed and rehoned the code to a 92% working solution with a better type of plot. Due to the massive size of the data it caused many rendering issues such as a huge gap between the plot title and the first actual plot and missing x axis labels.
 
-Which of course after a good nights sleep I realised _I_ was using the wrong plot _and_ data visualisationconcept and looking at the data visualisation backwards!
+Which of course after a good nights sleep I realised _I_ was using the wrong plot _and_ data visualisation concept and looking at the data visualisation backwards!
+
+Did notice as time has gone by CoPilot is making a lot more mistakes, might be better off Microsoft making
+an expert system version instead...
+
+
 
 ## Things To Learn Next
 
-- Proper use of KANBAN for project management
-- How to dynamically create ranges for subplots e.g. stores 1 to 9
+- Proper use of KANBAN for project management (there s a rumour it supports sprints..)
 - Better understanding of the plotly.express library and its options for visualisation
 - Better understanding interactive plots and how determine which is best for the data being visualised
 - Better understanding of how look at a raw csv file and know how to determine what hypothesis can be
   achieved with it.
+- More practice with machine learning, particularly with categorical data
 
-## Main Data Analysis Libraries (Mandatory For Project Use Of Visualisation)
 
-- numpy
-- pandas
-- plotly.express
-- seaborn
-- matplotlib.pyplot
 
-### Others Added By Me
-
-- from matplotlib.ticker import MultipleLocator <- for "ticks" between axis values
-- import nbformat <- added by me for plotly.express visualisation issue
-- os <- for directory routines
 
 ## Unfixed Bugs and Things To Improve
 
@@ -306,11 +368,20 @@ Which of course after a good nights sleep I realised _I_ was using the wrong plo
 - Uniformity regardling currency symbols in plots!
 - When adding images into the report markdown file VS Code creates a copy and puts it into the same
   folder Must discover if it is possible to use relative paths to stop it duplicating images and putting them into the wrong folder!
+- streamlit likes making sure containers cannot fill entire height of the screen, there is a good inch left
+  it will not let me use
+- streamlit likes having narrow scrollbars which can make scrolling difficult
+- 
+
+
+
 
 ## Credits
 
 - chatGPT really good for solving issues so far everything suggested worked!
+- StackOverlfow what a machine did not know these people did!
+
 
 ## Acknowledgements (optional)
 
-- Thank the people who supported this project.
+- Thank the people who supported this project and didn't laugh too loud at the speeling mistooks

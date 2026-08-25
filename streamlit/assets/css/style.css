@@ -219,16 +219,48 @@ div[data-testid="stAlert"] > div {
   font-size: 1.2rem;
 }
 
-/* expander stab 2 */
+/* format the footers */
+.st-key-conMainFooter1 {
+  padding-top: 4px;
+  padding-bottom: 10px;
+}
 
-/* .st-key-expTab1-1 div {
-  padding-top: 6px;
-  padding-bottom: 0px;
-  margin-top: 0px;
-  margin-bottom: 0px;
+.st-key-conMainFooter1 p {
+  color: aquamarine;
+}
 
-  height: 30px;
-} */
+.st-key-conMainFooter2 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.st-key-conMainFooter2 p {
+  color: rgb(255, 127, 187);
+  font-size: medium;
+
+  animation-name: aniFooter2Text;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes aniFooter2Text {
+  0% {
+    color: rgb(255, 127, 187);
+  }
+  35% {
+    color: rgb(255, 127, 234);
+  }
+  50% {
+    color: rgb(251, 159, 243);
+  }
+  75% {
+    color: rgb(255, 127, 234);
+  }
+  95% {
+    color: rgb(248, 134, 229);
+  }
+}
 
 /* format expanders for tab 1 */
 .st-key-expExpander1,
@@ -245,12 +277,7 @@ div[data-testid="stAlert"] > div {
 .st-key-expExpander12,
 .st-key-expExpander13,
 .st-key-expExpander14,
-.st-key-expExpander15,
-.st-key-expExpander16,
-.st-key-expExpander17,
-.st-key-expExpander18,
-.st-key-expExpander19,
-.st-key-expExpander20 p {
+.st-key-expExpander15 p {
   padding-top: 0px;
   padding-bottom: 0px;
   margin-top: 0px;

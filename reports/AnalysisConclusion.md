@@ -30,7 +30,7 @@ The journey to create this data story has been an interesting one. Providing me 
 
 Let us look at the visualisation that answers that question:
 
-![alt text](image-2.png)
+![no image](/reports/Images/Hypothesis1_plotly.png)
 
 As we can see from the above visualisation, there is a correlation between sales and weather.
 
@@ -42,7 +42,7 @@ Deeper analysis preferably by stores in a sales region would offer a better visu
 
 Let us analyse the visualisation that answers that question:
 
-![alt text](image-3.png)
+![no image](/reports/Images/Hypothesis2_plotly.png)
 
 Due to the large amount of data I chose a boxplot style visualisation to show the distribution of sales by store type. Also it allows us to see the outliers in the data and the variance of sales by store, which gives us a quick visual depiction of how holiday weeks affects sales directly.
 
@@ -52,7 +52,7 @@ We can deduce that holiday weeks have a positive effect on sales, and that the v
 
 Let us analyse the visualisation that answers that question:
 
-![alt text](image-4.png)
+![no image](/reports/Images/Hypothesis3_plotly.png)
 
 This simple yet direct visualisation show the direct difference between the store _types_ and sales.
 
@@ -64,15 +64,15 @@ This question requires a lot of visualisation to answer, simply due to the amoun
 
 These visualisations are split 5 visualisations for groups of stores i.e. 1-9 etc so bear with me!
 
-![alt text](image-10.png)
+![no image](/reports/Images/Hypothesis4_seaborn_1.png)
 
-![alt text](image-11.png)
+![no image](/reports/Images/Hypothesis4_seaborn_2.png)
 
-![alt text](image-12.png)
+![no image](/reports/Images/Hypothesis4_seaborn_3.png)
 
-![alt text](image-13.png)
+![no image](/reports/Images/Hypothesis4_seaborn_4.png)
 
-![alt text](image-14.png)
+![no image](/reports/Images/Hypothesis4_seaborn_5.png)
 
 An interesting visualisation that shows the correlation between store size and sales. It is clear that there is a positive correlation between store size and sales, but it is not a linear correlation, as we can see from the plot, and remember a smaller stores is not necessarily a less profitable store, as it may have a smaller customer base, but is still profitable in its own right _but_ suggest additional analysis regarding store _type_ in correlation to size and sales would be a logical next step.
 
@@ -82,7 +82,7 @@ In stores: 9, 19, 26, 37 all have high sales but store 26 is the highest. Furthe
 
 Let us analyse the visualisation that answers that question:
 
-![alt text](image-15.png)
+![no image](/reports/Images/Hypothesis5_plotly.png)
 
 As you are aware this is more than a visualisation it is an interactive tools, whereby you can "drill down" into the details and experience the data in a more dynamic way.
 
@@ -90,15 +90,15 @@ As we can see the visualisation is presented as a circular dial with the outer r
 
 Hovering the mouse over any section exposes brief details:
 
-![alt text](image-17.png)
+![no image](/reports/Images/Hypothesis5_plotly_1.png)
 
 Here we can see the mouse hovering over the outer ring shows store type, the store number, department and weekly sales yet we can go deeper:
 
-![alt text](image-19.png)
+![no image](/reports/Images/Hypothesis5_plotly_2.png)
 
 Here can see the mouse hovering over the first inner ring and can see the same information as the outer ring, but we can go deeper still double clicking on a store number drills into the data that creates the data box we have seen in the previous two images:
 
-![alt text](image-20.png)
+![no image](/reports/Images/Hypothesis5_plotly_3.png)
 
 No we can see each departments sales performance within that store, and as we can see when we hover the mouse over a department the information for that exact department.
 
@@ -112,9 +112,43 @@ As we cane see when we hover the mouse over a markdown section we can see the st
 
 When we double click on a store number we can see detailed markdown information for the store:
 
-![alt text](image-21.png)
+![no image](/reports/Images/Hypothesis5_plotly_1.png)
 
 Interactive insights are great when dealing (as we are) with a lot of data e,g. number of stores and their departments, and act as a great presentation tool for internal Q&A session regarding store performance and profitability.
+
+7
+
+![no image](/reports/Images/Hypothesis7_plotly.png)
+
+8
+
+![no image](/reports/Images/Hypothesis8_matplotlib.png)
+
+9
+
+![no image](/reports/Images/Hypothesis9_matplotlib.png)
+
+10
+
+![no image](/reports/Images/Hypothesis10_plotly.png)
+
+11
+
+![no image](/reports/Images/Hypothesis11_plotly.png)
+
+12
+
+Test
+
+![no image](/reports/Images/Hypothesis12_linearTest.png)
+
+![no image](/reports/Images/Hypothesis12_forestTest.png)
+
+Prediction
+
+![no image](/reports/Images/Hypothesis12_linearprediction.png)
+
+![no image](/reports/Images/Hypothesis12_forestprediction.png)
 
 ## Conclusion
 

@@ -35,7 +35,7 @@ documents <- Contains files:
 jupyter_notebooks <- Contains the Jupyter Notebooks used for ETL and Visualisation  
 pipelines - machine learning pipelines 
 reports<- Contains the report for the project
-    - Report/Images <- Contains images used in the report and all plot images
+    - Report/Images <- Contains images used in the report 
 streamlit <- contains files needed for Heroku to show streamlit dashboard
     assets: 
       - css <- Contains file: style.css for streamlit

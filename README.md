@@ -82,6 +82,8 @@ In GitHub there is a KANBAN project, that was used for project management.
 
 The dashboard is available via Heroku at this URL:
 
+https://project2-salesanalysis-6a151d5ce7f3.herokuapp.com/
+
 **GitHub**
 
 Project GitHub URL is:

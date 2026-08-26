@@ -21,11 +21,11 @@ import joblib
 #VARS
 
 #file paths
-CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_TEST_STREAMLIT_PATH =  "/assets/pipelines/linear_regression_hypothesis12_test_pipeline.pkl"
-CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_TEST_STREAMLIT_PATH = "/assets/pipelines/randomforest_hypothesis12_test_pipeline.pkl"
+CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_TEST_STREAMLIT_PATH =  "assets/pipelines/linear_regression_hypothesis12_test_pipeline.pkl"
+CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_TEST_STREAMLIT_PATH = "assets/pipelines/randomforest_hypothesis12_test_pipeline.pkl"
 
-CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH =  "/assets/pipelines/linear_regression_hypothesis12_pipeline.pkl"
-CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH =  "/assets/pipelines/randomforest_hypothesis12_pipeline.pkl"
+CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH =  "assets/pipelines/linear_regression_hypothesis12_pipeline.pkl"
+CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH =  "assets/pipelines/randomforest_hypothesis12_pipeline.pkl"
 
 CNST_STR_SALES_COMBINED_DATASET = "/assets/csv/Data/Sales_Combined_DataSet_Visualisation.csv"
 CNST_STR_FEATURES_DATASET = "/assets/csv/Data/Features_DataSet_Visualisation.csv"

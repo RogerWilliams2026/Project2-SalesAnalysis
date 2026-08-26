@@ -1,0 +1,279 @@
+html,
+body,
+.stApp {
+  background-color: rgb(39, 36, 72);
+  color: white;
+  font-weight: 800;
+}
+
+.stMain {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+/*
+ in order to get the title at the top(ish) of the screen need to change:
+*/
+
+/* change title colour */
+.appview-container h1 {
+  color: yellow;
+  padding-top: 0px;
+}
+
+/* change h3 colour */
+.appview-container h3 {
+  color: rgb(234, 234, 175);
+}
+
+/*streamlit classes*/
+
+/* adjust main section to fit page better */
+.block-container {
+  top: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  /* gets rid of vertical scrollbar */
+  padding-bottom: 0px;
+  margin-top: -20px;
+}
+
+header[data-testid="stHeader"] {
+  display: none;
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
+[data-testid="stSidebar"] {
+  background-color: rgb(48, 45, 85);
+  top: 0px;
+}
+
+/* set sidebar max width */
+[data-testid="stSidebar"] {
+  min-width: 240px;
+  max-width: 240px;
+}
+
+.st-key-radRadioButtons p {
+  color: rgb(0, 221, 255);
+  font-size: medium;
+}
+
+/*move title upwards set width*/
+[data-testid="stSidebar"] h1 {
+  background-color: rgb(56, 53, 93);
+  color: white;
+  top: 0px;
+  margin-top: -10px;
+  padding-left: 10px;
+  padding-top: 12px;
+  width: 200px;
+}
+/* change alert message div size and text padding */
+div[data-testid="stAlert"] > div {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+
+  padding-bottom: 0px;
+  padding-top: 4px;
+  padding-left: 0px;
+  padding-right: 0px;
+
+  height: 30px;
+}
+
+/*colour of info message */
+.stAlert p {
+  color: rgb(187, 241, 248);
+  font-weight: 800;
+  text-align: center;
+}
+
+/* tab list  */
+[data-testid="stTab"] {
+  margin-top: 0px;
+
+  padding-top: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  line-height: 0.5ch;
+  color: white;
+  background-color: green;
+}
+
+[data-testid="stTab"] p {
+  color: white;
+  font-weight: 800;
+  font-size: medium;
+}
+/* container - tab 1 */
+.st-key-conTab1 p {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  /* line-height: 0.8ch; */
+}
+
+.st-key-conTab1Title {
+  background-color: rgb(113, 154, 51);
+
+  padding-top: 2px;
+  padding-bottom: 4px;
+  margin-top: 4px;
+}
+
+.st-key-conTab1Title p {
+  text-align: center;
+  color: white;
+  font-weight: 800;
+  font-size: larger;
+}
+
+/* container - tab 2 */
+
+.st-key-conTab2Title {
+  background-color: rgb(113, 154, 51);
+
+  padding-top: 12px;
+  padding-bottom: 4px;
+  margin-top: 4px;
+}
+
+.st-key-conTab2Title p {
+  text-align: center;
+  color: white;
+  font-weight: 800;
+  font-size: larger;
+}
+
+.st-key-conTab2 p {
+  padding-top: 0px;
+
+  line-height: 0.8ch;
+}
+
+/* container - tab 3 */
+
+.st-key-conTab3Title {
+  background-color: rgb(113, 154, 51);
+
+  padding-top: 2px;
+  padding-bottom: 4px;
+  margin-top: 4px;
+}
+
+.st-key-conTab3Title p {
+  text-align: center;
+  color: white;
+  font-weight: 800;
+  font-size: larger;
+}
+/* need slightly smaller h3 size in tab 3 */
+.st-key-conTab3 h3 {
+  font-size: 1.5rem;
+}
+
+/* need slightly smaller h4 size in tab 3 */
+.st-key-conTab3 h4 {
+  font-size: 1.2rem;
+}
+
+/* format the footers */
+.st-key-conMainFooter1 {
+  padding-top: 4px;
+  padding-bottom: 10px;
+}
+
+.st-key-conMainFooter1 p {
+  color: aquamarine;
+}
+
+.st-key-conMainFooter2 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.st-key-conMainFooter2 p {
+  color: rgb(255, 127, 187);
+  font-size: medium;
+
+  animation-name: aniFooter2Text;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes aniFooter2Text {
+  0% {
+    color: rgb(255, 127, 187);
+  }
+  35% {
+    color: rgb(255, 127, 234);
+  }
+  50% {
+    color: rgb(252, 174, 246);
+  }
+  75% {
+    color: rgb(255, 127, 234);
+  }
+  95% {
+    color: rgb(248, 134, 229);
+  }
+}
+
+/* format expanders for tab 1 */
+.st-key-expExpander1,
+.st-key-expExpander2,
+.st-key-expExpander3,
+.st-key-expExpander4,
+.st-key-expExpander5,
+.st-key-expExpander6,
+.st-key-expExpander7,
+.st-key-expExpander8,
+.st-key-expExpander9,
+.st-key-expExpander10,
+.st-key-expExpander11,
+.st-key-expExpander12,
+.st-key-expExpander13,
+.st-key-expExpander14,
+.st-key-expExpander15 p {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+
+  color: rgb(0, 235, 0);
+  animation-name: aniExpandersText;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes aniExpandersText {
+  0% {
+    color: rgb(0, 235, 0);
+  }
+  35% {
+    color: rgb(26, 238, 26);
+  }
+  50% {
+    color: rgb(120, 243, 120);
+  }
+  75% {
+    color: rgb(59, 246, 59);
+  }
+  95% {
+    color: rgb(55, 255, 55);
+  }
+}
+
+.simpletable p {
+  color: rgb(255, 255, 255);
+}

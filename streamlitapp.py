@@ -27,10 +27,10 @@ CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_TEST_STREAMLIT_PATH = "/assets/pipelines/r
 CNST_STR_LINEAR_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH =  "assets/pipelines/linear_regression_hypothesis12_pipeline.pkl"
 CNST_STR_FOREST_PIPELINE_HYPOTHESIS12_STREAMLIT_PATH =  "/assets/pipelines/randomforest_hypothesis12_pipeline.pkl"
 
-CNST_STR_SALES_COMBINED_DATASET = "/assets/csv/Data/Sales_Combined_DataSet_Visualisation.csv"
-CNST_STR_FEATURES_DATASET = "/assets/csv/Data/Features_DataSet_Visualisation.csv"
-CNST_STR_SALES_DATASET = "/assets/csv/Data/Sales_DataSet_Visualisation.csv"
-CNST_STR_STORES_DATASET = "/assets/csv/Data/Stores_DataSet_Visualisation.csv"
+CNST_STR_SALES_COMBINED_DATASET = "/assets/csv/Data/VisualisationFiles/Sales_Combined_DataSet_Visualisation.csv"
+CNST_STR_FEATURES_DATASET = "/assets/csv/Data/VisualisationFiles/Features_DataSet_Visualisation.csv"
+CNST_STR_SALES_DATASET = "/assets/csv/Data/VisualisationFiles/Sales_DataSet_Visualisation.csv"
+CNST_STR_STORES_DATASET = "/assets/csv/Data/VisualisationFiles/Stores_DataSet_Visualisation.csv"
 
 #sidebar radio button control
 radRadioButtons = None

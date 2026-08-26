@@ -120,8 +120,8 @@ tabTab14 = None
 tabTab15 = None
 
 #sliders for user interaction
-sldSliderFrom = None
-
+sldSliderFrom1 = None
+sldSliderFrom2 = None
 
 #DataFrames vars for csv files for ML
 dfSales = pd.DataFrame()
@@ -207,7 +207,7 @@ conContainerMain = st.container(border=True, width="stretch", key="conMain", hei
 conMainFooter1 = st.container(border=True, width="stretch", key="conMainFooter1", height=40 )
 conMainFooter1.write("Created by Roger Williams - 2026")
 conMainFooter2 = st.container(border=True, width="stretch", key="conMainFooter2", height=50 )
-conMainFooter2.write("Each Page With A Plot Has A Data Table and Description - Use Scroll Bar On Right (Or Mouse Wheel)" +
+conMainFooter2.write("Each Page With A Plot Has A Data Table and Description - Use Scroll Bar On Right (Or Mouse Wheel If It Is Not Visible)" +
                      "To Move Down and See All Contents If Only Plot Visible")
 
 #create sidebar
@@ -295,12 +295,13 @@ match radRadioButtons:
         )
         
         fig.update_layout(
-           xaxis_title="Temperature (°C)",
+           xaxis_title="Temperature (Farenheit)",
            yaxis_title="Weekly Sales (£)", 
            title_x = 0.3, 
-           plot_bgcolor="#070707",
+           plot_bgcolor="#070707", 
+           paper_bgcolor ="#070707"
         )
-             
+                
         #remove after testing
         fig.update_xaxes(dtick=10)        # every 10 degrees
         fig.update_yaxes(dtick=100000)    # every 100,000 sales
@@ -323,7 +324,7 @@ match radRadioButtons:
         #plotly visualisation for hypothesis 2 - Sales Differences Between holiday and Non Holiday Weeks per Store Over last 12 Months
         #Note: in order for the "ticks" to show on the axes Plotly needs to be version 5.8 or higher
         conContainerTab2_Sub = tabTab2.container(border=True, width="stretch", key="conTab2Sub", height=780)
-        conContainerTab2_Sub.info("Sales Differences Between Holiday and Non Holiday Weeks per Store Over last 12 Months")
+        conContainerTab2_Sub.info("Sales Differences Between Holiday and Non Holiday Weeks Per Store Over last 12 Months")
         #load into DataFrame copy for working with   
         dfSales_Combined_DataSet_Work = dfSales_Combined_DataSet.copy()
 
@@ -332,7 +333,7 @@ match radRadioButtons:
            x="Store",
            y="Weekly_Sales",
            color="IsHoliday",
-           title="Sales Differences Between Holiday and Non-Holiday Weeks Per Store Last 12 Momths",
+           title="Sales Differences Between Holiday and Non-Holiday Weeks Per Store Last 12 Months",
            labels={
               "IsHoliday": "Holiday Status",
               "Weekly_Sales": "Total Weekly Sales"
@@ -342,7 +343,11 @@ match radRadioButtons:
            width=1050
         )
 
-        fig.update_layout(title_x = 0.3)        
+        fig.update_layout(title_x = 0.15, 
+                          xaxis_color="white",
+                          yaxis_color="white", 
+                          plot_bgcolor="#070707", 
+                          paper_bgcolor ="#070707")        
         conContainerTab2_Sub.plotly_chart(fig, use_container_width=True, key="figTab2") 
         expExpander6 =  conContainerTab2_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander6")
         expExpander6.dataframe(dfSales_Combined_DataSet_Work, use_container_width=True)         
@@ -395,7 +400,11 @@ match radRadioButtons:
            tickformat=","
         )      
  
-        fig.update_layout(title_x = 0.3, xaxis_color="white", yaxis_color="white", plot_bgcolor="#070707")        
+        fig.update_layout(title_x = 0.3, 
+                          xaxis_color="white",
+                          yaxis_color="white", 
+                          plot_bgcolor="#070707", 
+                          paper_bgcolor ="#070707")          
         conContainerTab3_Sub.plotly_chart(fig, use_container_width=True, key="figTab3") 
         expExpander7 =  conContainerTab3_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander7")
         expExpander7.dataframe(dfSales_Combined_DataSet_StoreType, use_container_width=True)         
@@ -451,7 +460,7 @@ match radRadioButtons:
            fig, ax = plt.subplots(figsize=(20, 6))
            #set colours
            fig.set_facecolor("#070707")
-           ax.set_facecolor("#070707")  
+           ax.set_facecolor("#070707") 
            ax.xaxis.label.set_color("white")
            ax.yaxis.label.set_color("white")
            ax.title.set_color("white")
@@ -548,8 +557,10 @@ match radRadioButtons:
            width=800,
            height=600,
            title_x = 0.3,
-           plot_bgcolor="#070707"
-        )
+           xaxis_color="white",
+           yaxis_color="white", 
+           plot_bgcolor="#070707", 
+           paper_bgcolor ="#070707")                       
  
         conSection2Tab.plotly_chart(fig, use_container_width=True, key="figTab5") 
         expExpander9 =  conSection2Tab.expander("Show Data Used For Plot", expanded=False, key="expExpander9")
@@ -631,8 +642,10 @@ match radRadioButtons:
         fig.update_layout(
            width=800,
            height=600,
-           plot_bgcolor="#070707"
-        )
+           xaxis_color="white",
+           yaxis_color="white", 
+           plot_bgcolor="#070707", 
+           paper_bgcolor ="#070707")                       
  
         conContainerTab6_Sub.plotly_chart(fig, use_container_width=True, key="figTab6") 
         expExpander10 = conContainerTab6_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander10")
@@ -707,8 +720,11 @@ match radRadioButtons:
            coloraxis_colorbar=dict(title="Total Sales (£)"),
            title_x=0.3,  # Center the title
            font=dict(size=12),  # Set font size for better readability
-           plot_bgcolor="#070707"
-        )  
+           xaxis_color="white",
+           yaxis_color="white", 
+           plot_bgcolor="#070707", 
+           paper_bgcolor ="#070707")                       
+
 
         conContainerTab7_Sub.plotly_chart(fig, use_container_width=True, key="figTab7") 
         expExpander11 = conContainerTab7_Sub.expander("Show Data Used For Plot", expanded=False, key="expExpander11")
@@ -734,7 +750,9 @@ match radRadioButtons:
         dfSales_Combined_DataSet_Work = dfSales_Combined_DataSet_Work[dfSales_Combined_DataSet_Work['Date'].dt.year == 2012]
 
         #add slider so user can play with the report
-        sdlSliderFrom = conContainerTab8_Sub.slider("Select Amount of Stores", min_value=10, max_value=dfSales_Combined_DataSet_Work["Store"].nunique(), value=10, step=1, key="sdlSliderFrom2")
+        sdlSliderFrom = conContainerTab8_Sub.slider("Select Amount of Stores", min_value=10, 
+                                                    max_value=dfSales_Combined_DataSet_Work["Store"].nunique(), value=10, step=1, 
+                                                    key="sdlSliderFrom1")
 
         #group by Store and get sum of Weekly_Sales
         dfSales_Combined_DataSet_Work = (
@@ -824,7 +842,8 @@ match radRadioButtons:
         dfSales_Combined_DataSet_Work = dfSales_Combined_DataSet_Work[dfSales_Combined_DataSet_Work['Date'].dt.year == 2012]
  
         #add slider so user can play with the report
-        sdlSliderFrom = conSection3Tab.slider("Select Amount of Stores", min_value=10, max_value=dfSales_Combined_DataSet_Work["Store"].nunique(), value=10, step=1, key="sdlSliderFrom2")
+        sdlSliderFrom = conSection3Tab.slider("Select Amount of Stores", min_value=10, max_value=dfSales_Combined_DataSet_Work["Store"].nunique(), 
+                                              value=10, step=1, key="sdlSliderFrom2")
 
  
         #group by Store and get sum of Weekly_Sales
@@ -888,12 +907,12 @@ match radRadioButtons:
    
  
  #******tab 10*******  
-        #plotly visualisation for hypothesis 10 - What percentage of customers were unemployed per store by month for last year?
+        #plotly visualisation for hypothesis 10 - What was the unemployment percentage per store by month for last year?
         #Note: last year in data is: 2012
       
         #Note: in order for the "ticks" to show on the axes Plotly needs to be version 5.8 or higher
         conContainerTab10_Sub = tabTab10.container(border=True, width="stretch", key="conTab10Sub", height=780)
-        conContainerTab10_Sub.info("What Percentage of Customers Were Unemployed Per Store By Month For Last Year")
+        conContainerTab10_Sub.info("What Was The Unemployment Percentage Per Store By Month For Last Year")
  
          #make copy of DataFrame
         dfSales_Combined_DataSet_Work = dfSales_Combined_DataSet.copy()
@@ -902,12 +921,12 @@ match radRadioButtons:
         dfSales_Combined_DataSet_Work = dfSales_Combined_DataSet_Work[dfSales_Combined_DataSet_Work["Date"].dt.year ==2012] 
         dfSales_Combined_DataSet_Work["Month"] = (dfSales_Combined_DataSet_Work["Date"].dt.month)
 
-        # Aggregate data
+        #use mean for the aggreagtion as sum will produce wierd results!
         dfSales_Combined_DataSet_Work = (
            dfSales_Combined_DataSet_Work
            .groupby(["Store", "Month"], as_index=False)
            ["Unemployment"]
-           .sum()
+           .mean()
         )
 
         #configure plot
@@ -926,14 +945,14 @@ match radRadioButtons:
            xaxis_title="Month",
            yaxis_title="Unemployment Rate (%)",
            title_x=0.3,  # Centre the title
-           font=dict(size=12), 
-           plot_bgcolor="#070707"
-        )
+                          xaxis_color="white",
+                          yaxis_color="white", 
+                          plot_bgcolor="#070707", 
+                          paper_bgcolor ="#070707")                       
 
         fig.update_xaxes(
            dtick="M1",  # Set tick interval to 1 month
            tickformat="%Y-%m",  # Format ticks as Year-Month
-           tickangle=45,  # Rotate ticks for better readability
         )
 
         fig.update_yaxes(
@@ -951,7 +970,7 @@ match radRadioButtons:
         
  
  #******tab 11*******  
-        #plotly visualisation for hypothesis 11 - What percentage of customer were unemployed by store size last year?
+        #plotly visualisation for hypothesis 11 - What Was The Unemployment Percentage Per Store By Store Size Last Year?
         #Note: last year in data is: 2012
       
         #Note: in order for the "ticks" to show on the axes Plotly needs to be version 5.8 or higher
@@ -968,12 +987,12 @@ match radRadioButtons:
         dfSales_Combined_DataSet_Work["Year"] = dfSales_Combined_DataSet_Work["Date"].dt.year.astype(int)
         dfSales_Combined_DataSet_Work["month_label"] = dfSales_Combined_DataSet_Work["Date"].dt.strftime("%d") + " " + dfSales_Combined_DataSet_Work["Date"].dt.month_name() 
 
-        # Aggregate data
+        #use mean rather than sum as the figures are not reliable if used!
         dfSales_Combined_DataSet_Work = (
            dfSales_Combined_DataSet_Work
            .groupby(["Store", "YearMonth","Store_Size"], as_index=False)
            ["Unemployment"]
-           .sum()
+           .mean()
         )
 
         #configure the plot
@@ -985,7 +1004,7 @@ match radRadioButtons:
            color="Unemployment",
            # markers=True,
            height=700,
-           title=f"Percentage of Unemployed Customers Per Store For Last Year by Store Size" 
+           title="What Was The Unemployment Percentage Per Store By Store Size Last Year?" 
         )
 
         fig.update_xaxes(type="category")
@@ -1000,8 +1019,10 @@ match radRadioButtons:
            scene_camera=dict(
               eye=dict(x=1.4, y=1.4, z=1.4)  # closer / more zoomed in
            ),
-           plot_bgcolor="#070707"
-        )       
+           xaxis_color="white",
+           yaxis_color="white", 
+           plot_bgcolor="#070707", 
+           paper_bgcolor ="#070707")                       
       
         #show plot       
         conContainerTab11_Sub.plotly_chart(fig, use_container_width=True) 
@@ -1156,13 +1177,6 @@ match radRadioButtons:
         ax.set_facecolor("#070707")         
         
         #plot actual sales
-        ax.plot(
-           dfPlot["Date"],
-           dfPlot["Actual_Sales"],
-           label="Actual Sales",
-           color="white",
-           linewidth=2
-        )
 
         #plot predictions
         ax.plot(
@@ -1339,15 +1353,6 @@ match radRadioButtons:
         # Set background colours
         fig.set_facecolor("#070707")
         ax.set_facecolor("#070707")        
-
-        #create actual sales plot
-        plt.plot(
-           dfPlot["Date"],
-           dfPlot["Actual_Sales"],
-           label="Actual Sales",
-           color="white",
-           linewidth=2
-        )
 
         #plot predictions
         plt.plot(

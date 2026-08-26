@@ -273,7 +273,7 @@ This code was heavily modified to fit naming conventions and how I needed the pl
 Been developing an ETL library and wanted to use it in this project, however have no idea how to
 do it, so asked chatGPT for a solution with this question:
 
-Am using jupyter notebook for a prooject and the notebook is in a subfolder. However I wish to
+Am using jupyter notebook for a project and the notebook is in a subfolder. However I wish to
 use some libraries in a another folder in the same project how can I import them?
 
 I attempted using:
@@ -293,7 +293,7 @@ _sys.path.insert(0, str(project_root / "assets" / "python_files"))_
 _import modGlobal_  
 _import modETL_Library as modETL_
 
-This works so used in everwhere!
+This works so used it everwhere!
 
 **Scenario Nine:**
 
@@ -360,11 +360,11 @@ _sns.barplot(_
 - color="steelblue"\*
   \*)
 
-_plt.title("Highest-Selling Department for Each Store — 2012")_
-_plt.xlabel("Total Sales ($)")_
+_plt.title("Highest-Selling Department for Each Store — 2012")_  
+_plt.xlabel("Total Sales ($)")_  
 _plt.ylabel("Store and Department")_
 
-_plt.tight_layout()_
+_plt.tight_layout()_  
 _plt.show()_
 
 Modified to fit my code and it works!
